@@ -1,0 +1,27 @@
+<h1>Listing artefacts</h1>
+
+<table>
+  <tr>
+    <th>Artefactid</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @artefacts.each do |artefact| %>
+  <tr>
+    <td><%= artefact.artefactid %></td>
+    <td><%= artefact.name %></td>
+    <td><%= artefact.description %></td>
+    <td><%= link_to 'Show', artefact %></td>
+    <td><%= link_to 'Edit', edit_artefact_path(artefact) %></td>
+    <td><%= link_to 'Destroy', artefact, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Artefact', new_artefact_path %>
