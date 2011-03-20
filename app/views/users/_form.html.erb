@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :userid %><br />
-    <%= f.text_field :userid %>
+    <%= @user.userid %>
   </div>
   <div class="field">
     <%= f.label :firstname %><br />
@@ -50,6 +50,14 @@
   <div class="field">
     <%= f.label :mobile %><br />
     <%= f.text_field :mobile %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -30,18 +30,24 @@ class User < ActiveRecord::Base
                           :length   => { :maximum => 25 }
                                                     
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email,   :presence => true,
+  validates :email,   :presence => { :in => true, :message => " address needs to be provided" }, 
                       :length => { :maximum => 50 },
-                      :format => { :with => email_regex},
+                      :format => { :with => email_regex, :message => " address needs to have correct format, e.g john@example.com"},
                       :uniqueness => { :case_sensitive => false }
                       
   validates :address, :presence => true
   validates :city, :presence => true
   validates :postcode, :presence => true
   validates :country, :presence => true
-  validates :password,  :presence     => true,
+  validates :password,  :presence => true, 
                         :confirmation => true,
-                        :length       => { :within => 6..20 }
+                        :length       => { :within => 6..20, :message => " needs to have between 6 and 20 characters" }
+  
+  phone_regex = /^[+\/\-() 0-9]+$/x
+  validates :mobile,    :presence     => true,
+                        :format => { :with => phone_regex, :message => "Mobile number contains non-digits"}
+                        
+              
                         
   before_save :encrypt_password
   before_save :make_userid
