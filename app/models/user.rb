@@ -20,7 +20,8 @@
 
 class User < ActiveRecord::Base
   
-  attr_accessible :firstname, :lastname, :email, :address, :city, :postcode, :country, :mobile
+  attr_accessor :password
+  attr_accessible :firstname, :lastname, :email, :address, :city, :postcode, :country, :mobile, :password, :password_confirmation
   
   validates :firstname,  :presence => true,
                           :length   => { :maximum => 25 }
@@ -29,7 +30,7 @@ class User < ActiveRecord::Base
                           :length   => { :maximum => 25 }
                                                     
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email,  :presence => true,
+  validates :email,   :presence => true,
                       :length => { :maximum => 50 },
                       :format => { :with => email_regex},
                       :uniqueness => { :case_sensitive => false }
@@ -38,5 +39,48 @@ class User < ActiveRecord::Base
   validates :city, :presence => true
   validates :postcode, :presence => true
   validates :country, :presence => true
+  validates :password,  :presence     => true,
+                        :confirmation => true,
+                        :length       => { :within => 6..20 }
+                        
+  before_save :encrypt_password
+  before_save :make_userid
+  
+  def self.authenticate(email, submitted_password) 
+    user = find_by_email(email)
+    return nil if user.nil? or !user.has_password?(submitted_password)
+    return user
+  end
+  
+  
+   # Return true if the user's password matches the submitted password.
+  def has_password?(submitted_password)
+    encrypted_password == encrypt(submitted_password)
+  end
+   
+  
+  private
+    # password
+    def encrypt_password
+        self.salt = make_salt if new_record?
+        self.encrypted_password = encrypt(password)
+    end
+
+    def encrypt(string)
+        secure_hash("#{salt}--#{string}")
+    end
+
+    def make_salt
+        secure_hash("#{Time.now.utc}--#{password}")
+    end
+
+    def secure_hash(string)
+        Digest::SHA2.hexdigest(string)
+    end  
+    
+    # userid
+    def make_userid
+      self.userid = 'u' + Time.new.strftime("%y") + firstname[0,1].downcase + lastname[0,1].downcase + User.count.to_s
+    end
   
 end

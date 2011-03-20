@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110315190533) do
+ActiveRecord::Schema.define(:version => 20110316163803) do
 
   create_table "artefacts", :force => true do |t|
     t.string   "artefactid"
@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(:version => 20110315190533) do
     t.string   "mobile"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "encrypted_password"
+    t.string   "salt"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
