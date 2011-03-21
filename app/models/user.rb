@@ -58,6 +58,11 @@ class User < ActiveRecord::Base
     return user
   end
   
+  def self.authenticate_with_salt(id, salt)
+    user = find_by_id(id)
+    (user && user.salt == salt) ? user : nil
+  end
+  
   
    # Return true if the user's password matches the submitted password.
   def has_password?(submitted_password)

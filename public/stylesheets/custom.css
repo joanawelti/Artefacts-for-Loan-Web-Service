@@ -47,6 +47,7 @@ a:visited {
   color: #069;
 }
 
+
 /* Navigation */
 
 nav {
@@ -189,4 +190,7 @@ ul.user_data div.medium_field input {
   list-style: square;
 }
 
-
+a.right_link {
+	float: right;
+	margin-left: 2em;
+}

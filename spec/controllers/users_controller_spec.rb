@@ -40,22 +40,22 @@ describe UsersController do
       @user = Factory(:user)
     end
   
-    it "should include the user's userid" do
+    pending "should include the user's userid" do
       get :edit, :id => @user
       response.should have_selector("h1", :content => @user.userid)
     end
   
-    it "should include the user's firstname" do
+    pending "should include the user's firstname" do
       get :edit, :id => @user
       response.should have_selector("h1", :content => @user.firstname)
     end
   
-    it "should include the user's lastname" do
+    pending "should include the user's lastname" do
       get :edit, :id => @user
       response.should have_selector("h1", :content => @user.lastname)
     end
   
-    it "should include the user's address" do
+    pending "should include the user's address" do
       get :edit, :id => @user
       response.should have_selector("h1", :content => @user.address)
     end
@@ -65,12 +65,12 @@ describe UsersController do
       response.should have_selector("h1", :content => @user.locator)
     end
   
-    it "should include the user's mobile number" do
+    pending "should include the user's mobile number" do
       get :edit, :id => @user
       response.should have_selector("h1", :content => @user.mobile)
     end
   
-    it "should include the user's email" do
+    pending "should include the user's email" do
       get :edit, :id => @user
       response.should have_selector("h1", :content => @user.email)
     end
@@ -101,7 +101,7 @@ describe UsersController do
 
         it "should have the right title" do
           post :create, :user => @attr
-          response.should have_selector("title", :content => "Registration")
+          response.should have_selector("title", :content => "Register")
         end
 
         it "should render the 'new' page" do
@@ -131,7 +131,7 @@ describe UsersController do
             end.should change(User, :count).by(1)
           end
 
-          it "should redirect to the user show page" do
+          pending "should redirect to the artifacts on loan page" do
             post :create, :user => @attr
             response.should redirect_to(user_path(assigns(:user)))
           end 
@@ -139,6 +139,11 @@ describe UsersController do
           it "should have a welcome message" do
             post :create, :user => @attr
             flash[:success].should =~ /Registration was successful/i
+          end
+          
+          it "should log the user in" do
+            post :create, :user => @attr
+            controller.should be_logged_in
           end
              
       end

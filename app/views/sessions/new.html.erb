@@ -1,0 +1,25 @@
+<h1>Log in</h1>
+
+<%= form_for(:session, :url => sessions_path) do |f| %>
+	<fieldset>
+		<ul class="user_data">
+			<li>
+  				<div class="field">
+				    <div><%= f.label :email %></div>
+				    <%= f.text_field :email %>
+				  </div>
+			</li>
+			<li>
+				<div class="field">
+				   <div><%= f.label :password %></div>
+				    <%= f.password_field :password %>
+			 	</div>
+			</li>
+		</ul>
+	</fieldset>
+	<div class="actions">
+	    <%= f.submit "Log in" %>
+	</div>
+<% end %>
+
+<p><%= link_to "Register", register_path, :class => "right_link" %> <%= link_to "Forgotten password", '#', :class => "right_link" %></p>
