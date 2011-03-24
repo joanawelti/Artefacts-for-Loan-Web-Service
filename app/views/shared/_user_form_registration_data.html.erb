@@ -1,0 +1,20 @@
+<fieldset>
+	<ul class="registration_information user_data">
+		<li>
+	  		<div class="field medium_field">
+		    	<div><%= f.label :email %></div>
+		    	<%= f.text_field :email %>
+			</div>
+		</li>
+		<li>
+			<div class="field">
+		    	<div><%= f.label :password %></div>
+		    	<%= f.password_field :password %>
+		  	</div>
+		  	<div class="field">
+		    	<div><%= f.label :password_confirmation %></div>
+		    	<%= f.password_field :password_confirmation %>
+		  	</div>
+		</li>
+	</ul>
+</fieldset>

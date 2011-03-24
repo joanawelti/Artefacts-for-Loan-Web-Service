@@ -1,0 +1,42 @@
+<fieldset>
+	<ul class="personal_information user_data">
+		<li>
+			<div class="field">
+			    <div><%= f.label :firstname %></div>
+			    <%= f.text_field :firstname %>
+		  </div>
+			<div class="field">
+			    <div><%= f.label :lastname %></div>
+			    <%= f.text_field :lastname %>
+		  </div>
+		</li>
+		<li>
+			<div class="field long_field">
+			    <div><%= f.label :address %></div>
+			    <%= f.text_field :address %>
+			 </div>
+		</li>
+		<li>
+			 <div class="field">
+			    <div><%= f.label :city %></div>
+			    <%= f.text_field :city %>
+			 </div>
+			 <div class="field short_field">
+			    <div><%= f.label :postcode %></div>
+			    <%= f.text_field :postcode %>
+			 </div>
+		</li>
+		<li>
+			<div class="field medium_field">
+			    <div><%= f.label :country %></div>
+			    <%= f.text_field :country %>
+			 </div>
+		</li>
+		<li>
+			<div class="field medium_field">
+		    	<div><%= f.label :mobile %></div>
+		    	<%= f.text_field :mobile %>
+		  	</div>
+		</li>
+	</ul>
+</fieldset>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110316163803) do
+ActiveRecord::Schema.define(:version => 20110324175101) do
 
   create_table "artefacts", :force => true do |t|
     t.string   "artefactid"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20110316163803) do
     t.string   "firstname"
     t.string   "lastname"
     t.string   "email"
-    t.boolean  "administrator"
+    t.boolean  "administrator",      :default => false
     t.string   "address"
     t.string   "city"
     t.string   "postcode"

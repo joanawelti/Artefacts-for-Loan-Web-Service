@@ -3,7 +3,7 @@
 }
 
 body {
-  background: #cff;
+  background: #aca0cb;
   font-family: arial,helvetica,sans-serif;
 }
 
@@ -34,17 +34,17 @@ section h1 {
 /* Links */
 
 a {
-  color: #09c;
+  color: #463867;
   text-decoration: none;
 }
 
 a:hover {
-  color: #069;
+  color: #201a30;
   text-decoration: underline;
 }
 
 a:visited {
-  color: #069;
+  color: #201a30;
 }
 
 
@@ -77,7 +77,7 @@ nav ul li a {
 }
 
 nav ul li a:visited {
-  color: #09c;
+  /*color: #09c;*/
 }
 
 nav ul li a:hover {
@@ -193,4 +193,20 @@ ul.user_data div.medium_field input {
 a.right_link {
 	float: right;
 	margin-left: 2em;
+}
+
+div.actions {
+	margin-bottom: 1em;
+}
+
+input.reset {
+	margin-left: 1em;
+}
+
+ul.users {
+  margin-top: 1em;
+}
+
+.users li {
+  list-style: none;
 }

@@ -63,6 +63,9 @@ class User < ActiveRecord::Base
     (user && user.salt == salt) ? user : nil
   end
   
+  def admin?
+    self.administrator
+  end
   
    # Return true if the user's password matches the submitted password.
   def has_password?(submitted_password)

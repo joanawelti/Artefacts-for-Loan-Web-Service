@@ -12,9 +12,8 @@ class SessionsController < ApplicationController
       @title = "Log in"
       render :new
     else
-      # Sign the user in and redirect to the user's show page.
       log_in user
-      redirect_to user
+      redirect_back_or user
     end
   end
  

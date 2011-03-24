@@ -13,6 +13,11 @@ Factory.define :user do |user|
   user.password_confirmation  "examplepassword"
 end
 
+Factory.sequence :email do |n|
+  "person#{n}@example.com"
+end
+
+
 #Factory.define :administrator do |administrator|
 #  administrator.firstname              "Joana" 
 #  administrator.lastname               "Welti"

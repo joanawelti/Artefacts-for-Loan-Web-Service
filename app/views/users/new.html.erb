@@ -1,16 +1,17 @@
 <h1>Register</h1>
+
 <%= form_for(@user) do |f| %>
 
-	<%= render 'shared/error_messages' %>
-
+	<%= render 'shared/error_messages', :object => f.object %>
+	
 	<fieldset>
 		<ul class="personal_information user_data">
 			<li>
-  				<div class="field">
+				<div class="field">
 				    <div><%= f.label :firstname %></div>
 				    <%= f.text_field :firstname %>
 			  </div>
-  				<div class="field">
+				<div class="field">
 				    <div><%= f.label :lastname %></div>
 				    <%= f.text_field :lastname %>
 			  </div>
@@ -45,6 +46,7 @@
 			</li>
 		</ul>
 	</fieldset>
+	
 	<fieldset>
 		<ul class="registration_information user_data">
 			<li>
@@ -63,8 +65,9 @@
 			    	<%= f.password_field :password_confirmation %>
 			  	</div>
 			</li>
-  		</ul>
+		</ul>
 	</fieldset>
+	
   <div class="actions">
     <%= f.submit "Submit" %>
   </div>
