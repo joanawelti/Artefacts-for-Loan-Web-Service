@@ -120,6 +120,7 @@ describe User do
     end
   end
   
+  # Administrator
   describe "admin attribute" do
 
       before(:each) do
@@ -207,6 +208,34 @@ describe User do
       end
   end
   
+  describe "artefacts associations" do
+    
+    before(:each) do
+      @user = User.create(@attr)
+      @art1 = Factory(:artefact, :name => "Kkk", :user => @user)
+      @art2 = Factory(:artefact, :name => "Zzz", :user => @user)
+      @art3 = Factory(:artefact, :name => "Aaa", :user => @user)
+    end
+    
+    it "should have an artefact attriubte" do
+      @user.should respond_to(:artefacts)
+    end
+    
+    it "should have the right artefacts, ordered alphabetically" do
+      @user.artefacts.should == [@art3, @art1, @art2]
+    end
+    
+    it "should destroy the associated artefacts when the user is deleted" do
+      @user.destroy
+      [@art1, @art2, @art3].each do |artefact|
+       
+        lambda do
+          Artefact.find(artefact.id)
+        end.should raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+    
+  end
   
 end
 

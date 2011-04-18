@@ -20,6 +20,8 @@
 
 class User < ActiveRecord::Base
   
+  has_many :artefacts, :dependent => :destroy
+  
   attr_accessor :password
   attr_accessible :firstname, :lastname, :email, :address, :city, :postcode, :country, :mobile, :password, :password_confirmation
   

@@ -18,16 +18,8 @@ Factory.sequence :email do |n|
 end
 
 
-#Factory.define :administrator do |administrator|
-#  administrator.firstname              "Joana" 
-#  administrator.lastname               "Welti"
-#  administrator.administrator          true  
-#  administrator.email                  "joana.welti.10@aberdeen.ac.uk"
-#  administrator.address                "Hillhead Halls of Residence"
-#  administrator.city                   "Old Aberdeen"
-#  administrator.postcode               "AB24 1WU"
-#  administrator.country                "United Kingdom"
-#  administrator.mobile                 "07756734344"
-#  administrator.password               "passwordForJoana"
-#  administrator.password_confirmation  "passwordForJoana"
-#end
+Factory.define :artefact do |artefact|
+  artefact.name "Name"
+  artefact.description "Description for artefact"
+  artefact.association :user
+end

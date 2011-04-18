@@ -1,4 +1,8 @@
 class ArtefactsController < ApplicationController
+  
+  before_filter :authenticate
+  
+  
   # GET /artefacts
   # GET /artefacts.xml
   def index

@@ -23,6 +23,19 @@ module SessionsHelper
     self.current_user = nil
   end
   
+  def authenticate
+    deny_access unless logged_in?
+  end
+
+  def authenticate_admin
+    redirect_to(root_path) unless current_user.administrator?
+  end
+
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_path) unless current_user?(@user) or current_user.administrator?
+  end
+  
   def deny_access
     store_location
     redirect_to login_path, :notice => "You must be logged in in order to access this page."
