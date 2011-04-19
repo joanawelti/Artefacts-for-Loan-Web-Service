@@ -237,5 +237,32 @@ describe User do
     
   end
   
+   describe "artefact associations" do
+
+        before(:each) do
+          @user = User.create(@attr)
+          @mp1 = Factory(:artefact, :user => @user, :name => "test1")
+          @mp2 = Factory(:artefact, :user => @user, :name => "test2")
+        end
+        
+        describe "hkkh" do
+
+          pending "should have a feed" do
+            @user.should respond_to(:feed)
+          end
+
+          pending "should include the user's artefacts" do
+            @user.feed.include?(@mp1).should be_true
+            @user.feed.include?(@mp2).should be_true
+          end
+
+          pending "should not include a different user's microposts" do
+            mp3 = Factory(:micropost,
+                          :user => Factory(:user, :email => Factory.next(:email)))
+            @user.feed.include?(mp3).should be_false
+          end
+        end
+      end
+  
 end
 

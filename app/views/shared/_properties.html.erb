@@ -1,0 +1,6 @@
+<% unless @properties_items.empty? %>
+  <table class="artefacts" summary="User artefacts">
+    <%= render :partial => 'shared/properties_item', :collection => @properties_items %>
+  </table>
+  <%= will_paginate @properties_items %>
+<% end %>

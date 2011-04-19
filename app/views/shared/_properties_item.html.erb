@@ -1,0 +1,19 @@
+<tr>
+  <td class="artefacts">
+    <!--<span class="user">
+      <%= link_to properties_item.user.name, properties_item.user %>
+    </span> -->
+    <span class="name"><%= properties_item.name %></span>
+    <span class="description"><%= properties_item.description %></span>
+  </td>
+  <% if current_user?(properties_item.user) %>
+  <td>
+    <%= link_to "delete", properties_item, :method => :delete,
+                                     :confirm => "You sure?",
+                                     :title => properties_item.content %>
+									<td>
+	<%= link_to 'edit', edit_artefact_path(properties_item) %>
+									  
+  </td>
+  <% end %>
+</tr>

@@ -350,9 +350,8 @@ describe UsersController do
             response.should redirect_to(users_path)
           end
         end
-      end
-  
-  
-  
+      
+    end
+
 end    
 

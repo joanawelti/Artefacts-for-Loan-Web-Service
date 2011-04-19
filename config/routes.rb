@@ -1,6 +1,6 @@
 ArtefactsService::Application.routes.draw do
 
-  resources :artefacts
+  resources :artefacts, :only => [:create, :destroy]
   resources :users
   resources :sessions, :only => [:new, :create, :destroy]
   

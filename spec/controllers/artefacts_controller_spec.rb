@@ -11,128 +11,6 @@ describe ArtefactsController do
   describe "GET index" do
     
   end
-
-  describe "GET show" do
-    it "assigns the requested artefact as @artefact" do
-      Artefact.stub(:find).with("37") { mock_artefact }
-      get :show, :id => "37"
-      assigns(:artefact).should be(mock_artefact)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new artefact as @artefact" do
-      Artefact.stub(:new) { mock_artefact }
-      get :new
-      assigns(:artefact).should be(mock_artefact)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested artefact as @artefact" do
-      Artefact.stub(:find).with("37") { mock_artefact }
-      get :edit, :id => "37"
-      assigns(:artefact).should be(mock_artefact)
-    end
-  end
-
-  describe "POST 'create'" do
-
-      before(:each) do
-        @user = test_log_in(Factory(:user))
-      end
-
-      describe "failure" do
-
-        before(:each) do
-          @attr = { :name => "", :description => "" }
-        end
-
-        it "should not create an artefact" do
-          lambda do
-            post :create, :artefact => @attr
-          end.should_not change(Artefact, :count)
-        end
-
-        it "should render the home page" do
-          post :create, :artefacts => @attr
-          response.should redirect_to(artefacts_path)
-        end
-      end
-
-      describe "success" do
-
-        before(:each) do
-          @attr = { :name => "Book", :description => "Lorem ipsum" }
-        end
-
-        it "should create an artefact" do
-          lambda do
-            post :create, :artefact => @attr
-          end.should change(Artefact, :count).by(1)
-        end
-
-        pending "should redirect to the artifacts main page" do
-          post :create, :artefact => @attr
-          response.should redirect_to(artefacts_path)
-        end
-
-        it "should have a flash message" do
-          post :create, :artefact => @attr
-          flash[:success].should =~ /artefact created/i
-        end
-      end
-    end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested artefact" do
-        Artefact.stub(:find).with("37") { mock_artefact }
-        mock_artefact.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :artefact => {'these' => 'params'}
-      end
-
-      it "assigns the requested artefact as @artefact" do
-        Artefact.stub(:find) { mock_artefact(:update_attributes => true) }
-        put :update, :id => "1"
-        assigns(:artefact).should be(mock_artefact)
-      end
-
-      it "redirects to the artefact" do
-        Artefact.stub(:find) { mock_artefact(:update_attributes => true) }
-        put :update, :id => "1"
-        response.should redirect_to(artefact_url(mock_artefact))
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the artefact as @artefact" do
-        Artefact.stub(:find) { mock_artefact(:update_attributes => false) }
-        put :update, :id => "1"
-        assigns(:artefact).should be(mock_artefact)
-      end
-
-      it "re-renders the 'edit' template" do
-        Artefact.stub(:find) { mock_artefact(:update_attributes => false) }
-        put :update, :id => "1"
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested artefact" do
-      Artefact.stub(:find).with("37") { mock_artefact }
-      mock_artefact.should_receive(:destroy)
-      delete :destroy, :id => "37"
-    end
-
-    it "redirects to the artefacts list" do
-      Artefact.stub(:find) { mock_artefact }
-      delete :destroy, :id => "1"
-      response.should redirect_to(artefacts_url)
-    end
-  end
   
   describe "access control" do
 
@@ -146,5 +24,84 @@ describe ArtefactsController do
       response.should redirect_to(login_path)
     end
   end
+  
+  describe "POST 'create'" do
+
+      before(:each) do
+        @user = test_sign_in(Factory(:user))
+      end
+
+      describe "failure" do
+
+        before(:each) do
+          @attr = { :name => "", :description => "Example artefact" }
+        end
+
+        it "should not create an artefact" do
+          lambda do
+            post :create, :artefact => @attr
+          end.should_not change(artefact, :count)
+        end
+
+        pending "should render the home page" do
+          post :create, :artefact => @attr
+          response.should render_template('pages/home')
+        end
+      end
+
+      describe "success" do
+
+        before(:each) do
+          @attr = { :name => "Artefact", :description => "Example artefact" }
+        end
+
+        it "should create a artefact" do
+          lambda do
+            post :create, :artefact => @attr
+          end.should change(artefact, :count).by(1)
+        end
+
+        pending "should redirect to the home page" do
+          post :create, :artefact => @attr
+          response.should redirect_to(root_path)
+        end
+
+        it "should have a flash message" do
+          post :create, :artefact => @attr
+          flash[:success].should =~ /successfully/i
+        end
+      end
+    end
+    
+    describe "DELETE 'destroy'" do
+        describe "for an unauthorized user" do
+
+          before(:each) do
+            @user = Factory(:user)
+            wrong_user = Factory(:user, :email => Factory.next(:email))
+            test_sign_in(wrong_user)
+            @artefact = Factory(:artefact, :user => @user)
+          end
+
+          it "should deny access" do
+            delete :destroy, :id => @artefact
+            response.should redirect_to(root_path)
+          end
+        end
+
+        describe "for an authorized user" do
+          
+          before(:each) do
+            @user = test_sign_in(Factory(:user))
+            @artefact = Factory(:artefact, :user => @user)
+          end
+
+          it "should destroy the micropost" do
+            lambda doartefact
+              delete :destroy, :id => @micropost
+            end.should change(Artefact, :count).by(-1)
+          end
+        end
+      end
 
 end

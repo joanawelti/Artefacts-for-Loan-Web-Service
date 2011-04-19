@@ -1,6 +1,7 @@
 class ArtefactsController < ApplicationController
   
-  before_filter :authenticate
+  before_filter :authenticate, :only => [:create, :destroy]
+  before_filter :authenticated_user, :only => :destroy
   
   
   # GET /artefacts
@@ -44,16 +45,12 @@ class ArtefactsController < ApplicationController
   # POST /artefacts
   # POST /artefacts.xml
   def create
-    @artefact = Artefact.new(params[:artefact])
-
-    respond_to do |format|
-      if @artefact.save
-        format.html { redirect_to(@artefact, :notice => 'Artefact was successfully created.') }
-        format.xml  { render :xml => @artefact, :status => :created, :location => @artefact }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @artefact.errors, :status => :unprocessable_entity }
-      end
+    @artefact = current_user.artefacts.build(params[:artefact])
+    if @artefact.save
+      flash[:success] = "Artefact created successfully"
+      redirect_to root_path
+    else
+      #
     end
   end
 
@@ -73,15 +70,14 @@ class ArtefactsController < ApplicationController
     end
   end
 
-  # DELETE /artefacts/1
-  # DELETE /artefacts/1.xml
   def destroy
-    @artefact = Artefact.find(params[:id])
-    @artefact.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(artefacts_url) }
-      format.xml  { head :ok }
-    end
+      @artefact.destroy
+      redirect_back_or root_path
   end
+
+  private
+    def authorized_user
+        @artefact = Artefact.find(params[:id])
+        redirect_to root_path unless current_user?(@artefact.user)  
+    end
 end

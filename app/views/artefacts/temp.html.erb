@@ -1,0 +1,6 @@
+<% unless @user.artefacts.empty? %>
+        <table class="artefacts" summary="User artefacts">
+          <%= render @artefacts %>
+        </table>
+        <%= will_paginate @artefacts %>
+<% end %>
