@@ -1,0 +1,9 @@
+<h1>My artefacts</h1>
+<%= link_to "Add artefact", new_artefact_path %>
+<% unless @artefacts.empty? %>
+        <table class="artefacts" summary="User artefacts">
+          <%= render :partial => "artefacts/artefact", :collection => @artefacts %>
+        </table>
+        <%= will_paginate @artefacts %>
+<% end %>
+

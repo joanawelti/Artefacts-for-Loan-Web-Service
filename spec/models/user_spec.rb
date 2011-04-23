@@ -245,21 +245,17 @@ describe User do
           @mp2 = Factory(:artefact, :user => @user, :name => "test2")
         end
         
-        describe "hkkh" do
+        describe "properties" do
 
-          pending "should have a feed" do
-            @user.should respond_to(:feed)
+          it "should include the user's artefacts" do
+            @user.artefacts.include?(@mp1).should be_true
+            @user.artefacts.include?(@mp2).should be_true
           end
 
-          pending "should include the user's artefacts" do
-            @user.feed.include?(@mp1).should be_true
-            @user.feed.include?(@mp2).should be_true
-          end
-
-          pending "should not include a different user's microposts" do
-            mp3 = Factory(:micropost,
+          it "should not include a different user's artefacts" do
+            mp3 = Factory(:artefact,
                           :user => Factory(:user, :email => Factory.next(:email)))
-            @user.feed.include?(mp3).should be_false
+            @user.artefacts.include?(mp3).should be_false
           end
         end
       end

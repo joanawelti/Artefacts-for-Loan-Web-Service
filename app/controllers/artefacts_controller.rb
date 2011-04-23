@@ -1,13 +1,18 @@
 class ArtefactsController < ApplicationController
   
-  before_filter :authenticate, :only => [:create, :destroy]
-  before_filter :authenticated_user, :only => :destroy
+  before_filter :authenticate, :only => [:create, :destroy, :new]
+  before_filter :authorized_user, :only => :destroy
   
   
   # GET /artefacts
   # GET /artefacts.xml
   def index
-    @artefacts = Artefact.all
+    if current_user.administrator
+      @artefacts = Artefact.all
+    else 
+      # only display artefacts that are visible
+      @artefacts = Artefact.where(['visible=?', true])
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -29,6 +34,7 @@ class ArtefactsController < ApplicationController
   # GET /artefacts/new
   # GET /artefacts/new.xml
   def new
+    @title = "New Artefact"
     @artefact = Artefact.new
 
     respond_to do |format|
@@ -48,9 +54,10 @@ class ArtefactsController < ApplicationController
     @artefact = current_user.artefacts.build(params[:artefact])
     if @artefact.save
       flash[:success] = "Artefact created successfully"
-      redirect_to root_path
+      redirect_to edit_user_path(current_user)
     else
-      #
+      @title = "New Artefact"
+      render 'new'
     end
   end
 
@@ -71,13 +78,16 @@ class ArtefactsController < ApplicationController
   end
 
   def destroy
-      @artefact.destroy
-      redirect_back_or root_path
+    @artefact = Artefact.find(params[:id])
+    @artefact.destroy      
+    flash[:success] = "Artefact deleted successfully"
+    redirect_back_or artefacts_path
   end
 
   private
     def authorized_user
         @artefact = Artefact.find(params[:id])
-        redirect_to root_path unless current_user?(@artefact.user)  
+        redirect_to root_path unless current_user?(@artefact.user) or current_user.administrator? 
     end
+  
 end

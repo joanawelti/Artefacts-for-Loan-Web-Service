@@ -15,6 +15,10 @@
   <%= @artefact.description %>
 </p>
 
+<p>
+	<%= image_tag @artefact.photo.url(:small), :class => "artefact_image" %>
+</p>
+
 
 <%= link_to 'Edit', edit_artefact_path(@artefact) %> |
 <%= link_to 'Back', artefacts_path %>

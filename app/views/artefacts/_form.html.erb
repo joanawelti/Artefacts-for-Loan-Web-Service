@@ -1,29 +1,26 @@
-<%= form_for(@artefact) do |f| %>
-  <% if @artefact.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@artefact.errors.count, "error") %> prohibited this artefact from being saved:</h2>
-
-      <ul>
-      <% @artefact.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :artefactid %><br />
-    <%= f.text_field :artefactid %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
-  </div>
+<% form_for(@artefact, :html => { :multipart => true }) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object %>
+  	<div class="field">
+    	<%= f.label :name %><br />
+    	<%= f.text_field :name %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :description %><br />
+    	<%= f.text_area :description %>
+  	</div>
+	<div class="field">
+		<%= f.file_field :photo %> 
+	</div>
+	<div>
+		<%= f.label :visible, 'Show', :value => "true" %>
+		<%= f.radio_button :visible, "true", :checked => true %> 
+		<%= f.label :visible, 'Hide', :value => "false" %>
+		<%= f.radio_button :visible, "false" %>
+	</div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Update" %>
+	<%= f.submit "Cancel", :type => "button", :onclick => "this.form.reset()", :class => "reset" %>
   </div>
 <% end %>
+
+

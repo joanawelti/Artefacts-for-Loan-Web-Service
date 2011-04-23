@@ -21,5 +21,7 @@ end
 Factory.define :artefact do |artefact|
   artefact.name "Name"
   artefact.description "Description for artefact"
+  artefact.visible true
   artefact.association :user
+  artefact.photo File.join(Rails.root, 'spec', 'images', 'test.jpg')
 end

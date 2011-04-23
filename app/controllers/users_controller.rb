@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_filter :authenticate, :only => [:edit, :update, :destroy, :index] #methods only for logged in users
+  before_filter :authenticate, :only => [:edit, :update, :destroy, :index, "myartefacts"] #methods only for logged in users
   before_filter :correct_user, :only => [:edit, :update]  
   before_filter :authenticate_admin, :only => [:index, :destroy]
   
@@ -52,19 +52,8 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
   
-  private
-
-    def authenticate
-      deny_access unless logged_in?
-    end
-  
-    def authenticate_admin
-      redirect_to(root_path) unless current_user.administrator?
-    end
-  
-    def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_path) unless current_user?(@user) or current_user.administrator?
-    end
+  def myartefacts
+    @artefacts = current_user.artefacts.paginate(:page => params[:page])
+  end
   
 end

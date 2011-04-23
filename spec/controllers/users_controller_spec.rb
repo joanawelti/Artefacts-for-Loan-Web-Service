@@ -52,7 +52,7 @@ describe UsersController do
           it "should have the right title" do
             get :index
             response.should have_selector("title", :content => "All users")
-           end
+          end
           
            it "should have an element for each user" do
             get :index
@@ -351,6 +351,29 @@ describe UsersController do
           end
         end
       
+    end
+    
+    describe "GET 'myartefacts'" do
+      
+      describe "as a non-logged-in user" do
+        it "should deny access" do
+          get :myartefacts
+          response.should redirect_to(login_path)
+        end
+      end
+
+      describe "as a logged-in user" do
+        
+        before(:each) do
+            @user = Factory(:user)
+            test_log_in(@user)
+        end
+
+        it "should have the right title" do
+          get :myartefacts
+          response.should have_selector("title", :content => "My artefacts")
+        end
+      end
     end
 
 end    

@@ -17,7 +17,10 @@
     <td><%= artefact.description %></td>
     <td><%= link_to 'Show', artefact %></td>
     <td><%= link_to 'Edit', edit_artefact_path(artefact) %></td>
-    <td><%= link_to 'Destroy', artefact, :confirm => 'Are you sure?', :method => :delete %></td>
+	<td><%= link_to "delete", artefact, :method => :delete,
+                                     :confirm => "You sure?",
+                                     :title => artefact.name %>
+	</td>
   </tr>
 <% end %>
 </table>

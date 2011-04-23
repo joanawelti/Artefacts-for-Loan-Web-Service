@@ -1,3 +1,21 @@
+h1 {
+  font-size: 200%;
+}
+
+h2 {
+  font-size: 160%;
+}
+
+h3 {
+  	font-size: 120%;
+}
+
+h4 {
+  	font-size: 100%;
+	font-weight: bold;
+}
+
+
 .container {
   width: 710px;
 }
@@ -27,9 +45,6 @@ section {
   background: #fff;
 }
 
-section h1 {
-  font-size: 200%;
-}
 
 /* Links */
 
@@ -209,4 +224,25 @@ ul.users {
 
 .users li {
   list-style: none;
+}
+
+/**
+*	Artefacts
+*/
+table.artefact_item {
+	border: 1px solid #CCCCCC;
+	margin: 0 0 1.5em;
+}
+
+.artefact_item h3 {
+	font-weight: bold;
+	margin: 0.3em;
+}
+
+.artefact_item .artefact_links {
+	float: right;
+}
+
+.artefact_item .artefact_links a {
+	margin-left: 0.8em;
 }

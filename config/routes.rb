@@ -1,13 +1,19 @@
 ArtefactsService::Application.routes.draw do
-
-  resources :artefacts, :only => [:create, :destroy]
+  
+  resources :artefacts
   resources :users
+  resources :users do
+    member do
+      get 'myartefacts'
+    end
+  end
+  
   resources :sessions, :only => [:new, :create, :destroy]
   
   match '/register',  :to => 'users#new'
   match '/login',     :to => 'sessions#new'
-  match '/logout',    :to => 'sessions#destroy'     
-  
+  match '/logout',    :to => 'sessions#destroy'    
+  #match 'users/:id/myartefacts', :to => 'users#myartefacts'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

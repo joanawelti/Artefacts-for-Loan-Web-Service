@@ -70,9 +70,8 @@
 	
   	<div class="actions">
     	<%= f.submit "Update", :class => "submit" %>
-  		<%= f.submit "Cancel", :onclick => "this.form.reset()", :class => "reset" %>
+  		<%= f.submit "Cancel", :type => "button", :onclick => "this.form.reset()", :class => "reset" %>
 	</div>
 
 <% end %>
-<%= link_to "My artefacts", artefact_path %>
 <%= link_to 'Back', users_path %>
