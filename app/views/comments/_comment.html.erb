@@ -1,0 +1,19 @@
+<tr>
+	<table>
+		<tr>
+			<td>
+				<span class="user_id"><%= comment.user.userid %></span>
+				<span class="date"><%= comment.created_at %></span>
+				<%= link_to 'Edit comment', edit_comment_path(comment) %>
+				<%= link_to 'Delete comment', comment,  :method => :delete,
+                                 				:confirm => "You sure?",
+                                 				:title => "Comment" %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span class="content"><%= comment.content %></span>
+			</td>
+		</tr>
+	</table>
+</tr>

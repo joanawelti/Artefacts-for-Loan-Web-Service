@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :artefacts, :dependent => :destroy
   has_many :loans,  :foreign_key => "loaner_id"
   has_many :loaned_items, :through => :loans, :source => :loaned
+  has_many :comments, :dependent => :destroy
   
   ## attributes
   attr_accessor :password

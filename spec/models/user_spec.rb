@@ -290,5 +290,29 @@ describe User do
   
   end
   
+  describe "comments associations" do
+
+    before(:each) do
+      @user = User.create(@attr)
+      @owner = Factory(:user, :email => Factory.next(:email))
+      @artefact = Factory(:artefact, :user => @owner)
+      
+      @c1 = Factory(:comment, :user => @user, :artefact_id => @artefact.id, :created_at => 1.day.ago)
+      @c2 = Factory(:comment, :user => @user, :artefact_id => @artefact.id, :created_at => 1.hour.ago)
+    end
+
+    it "should have a comment attribute" do
+      @user.should respond_to(:comments)
+    end
+    
+    it "should destroy associated comments" do
+      @user.destroy
+      [@c1, @c2].each do |comment|
+        Comment.find_by_id(comment.id).should be_nil
+      end
+    end
+  
+  end
+  
 end
 

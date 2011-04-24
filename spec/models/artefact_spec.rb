@@ -72,7 +72,33 @@ describe Artefact do
         @user.loan!(@artefact)
         @artefact.loaners.should include(@user)
     end
+  
+  end
+  
+  describe "comments associations" do
+
+    before(:each) do
+      @owner = Factory(:user, :email => Factory.next(:email))
+      @artefact = @owner.artefacts.create(@attr)
+      
+      @c1 = Factory(:comment, :user => @user, :artefact => @artefact, :created_at => 1.day.ago)
+      @c2 = Factory(:comment, :user => @user, :artefact => @artefact, :created_at => 1.hour.ago)
+    end
+
+    it "should have a comment attribute" do
+      @artefact.should respond_to(:comments)
+    end
+
+    it "should have the right microposts in the right order" do
+      @artefact.comments.should == [@c2, @c1]
+    end
     
+    it "should destroy associated comments" do
+      @artefact.destroy
+      [@c1, @c2].each do |comment|
+        Comment.find_by_id(comment.id).should be_nil
+      end
+    end
   
   end
 

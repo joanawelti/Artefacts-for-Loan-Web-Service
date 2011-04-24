@@ -1,23 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Artefactid:</b>
-  <%= @artefact.artefactid %>
-</p>
+<table>
+<%= render :partial => "artefact_item_short", :object => @artefact %>
+</table>
 
-<p>
-  <b>Name:</b>
-  <%= @artefact.name %>
-</p>
-
-<p>
-  <b>Description:</b>
-  <%= @artefact.description %>
-</p>
-
-<p>
-	<%= image_tag @artefact.photo.url(:small), :class => "artefact_image" %>
-</p>
+<% unless @artefact.comments.empty? %>
+	<table class="comments" summary="Artefact's comments">
+        <%= render @comments %>
+    </table>
+    <%= will_paginate @comments %>
+<% end %>
 
 
 <%= link_to 'Edit', edit_artefact_path(@artefact) %> |

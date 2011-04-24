@@ -16,15 +16,7 @@
 					<% end %>
 				</span>
 			</td>
-			</tr>
-			<tr>
-			<td>
-				<%= image_tag artefact.photo.url(:thumb), :class => "artefact_thumbnail" %>
-			</td>
-			 	<td class="artefact">
-			   	<h4 class="name"><%= artefact.name %></h4>
-			   	<span class="description"><%= artefact.description %></span>
-			</td>	
-		</tr>	
+		</tr>
+		<%= render :partial => "artefacts/artefact_item_short", :object => artefact %>
 	</table>	
 </tr>

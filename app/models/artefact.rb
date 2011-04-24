@@ -18,6 +18,7 @@ class Artefact < ActiveRecord::Base
   has_many :reverse_loans,  :foreign_key => "loaned_id",
                             :class_name => "Loan"
   has_many :loaners, :through => :reverse_loans
+  has_many :comments, :dependent => :destroy
   
   
   ## attributes

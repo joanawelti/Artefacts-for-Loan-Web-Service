@@ -16,6 +16,7 @@ ArtefactsService::Application.routes.draw do
   
   resources :sessions, :only => [:new, :create, :destroy]
   resources :loans, :only => [:create, :destroy]
+  resources :comments, :only => [:create, :edit, :destroy]
   
   match '/register',  :to => 'users#new'
   match '/login',     :to => 'sessions#new'

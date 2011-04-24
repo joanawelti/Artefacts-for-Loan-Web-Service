@@ -25,3 +25,9 @@ Factory.define :artefact do |artefact|
   artefact.association :user
   artefact.photo File.join(Rails.root, 'spec', 'images', 'test.jpg')
 end
+
+Factory.define :comment do |comment|
+  comment.content "Foo bar"
+  comment.association :user 
+  comment.association :artefact
+end

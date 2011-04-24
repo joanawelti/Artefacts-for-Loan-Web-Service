@@ -24,6 +24,7 @@ class ArtefactsController < ApplicationController
   # GET /artefacts/1.xml
   def show
     @artefact = Artefact.find(params[:id])
+    @comments = @artefact.comments.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # show.html.erb
