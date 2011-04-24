@@ -48,10 +48,28 @@ describe "LayoutLinks" do
                                            :content => "Log out")
       end
       
-      it "should have a link to the users data" do
+      it "should have a link to the user's data" do
           visit root_path
           response.should have_selector("a", :href => user_path(@user),
-                                               :content => @user.userid )
+                                               :content => "My details" )
+      end
+      
+      it "should have a link to the user's artefacts" do
+          visit root_path
+          response.should have_selector("a", :href => myartefacts_user_path(@user),
+                                              :content => "My artefacts" )
+      end
+      
+      it "should have a link to the user's loans" do
+          visit root_path
+          response.should have_selector("a", :href => myloans_user_path(@user),
+                                              :content => "My loans" )
+      end
+      
+      it "should have a link to the user's loaned artefacts" do
+          visit root_path
+          response.should have_selector("a", :href => myloanedartefacts_user_path(@user),
+                                              :content => "My loaned artefacts" )
       end
       
 

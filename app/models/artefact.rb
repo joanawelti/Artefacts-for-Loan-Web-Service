@@ -12,18 +12,29 @@
 #
 
 class Artefact < ActiveRecord::Base
+  
+  ## relationships
+  belongs_to :user
+  has_many :reverse_loans,  :foreign_key => "loaned_id",
+                            :class_name => "Loan"
+  has_many :loaners, :through => :reverse_loans
+  
+  
+  ## attributes
   attr_accessible :name, :description, :photo, :visible
   
+  ## validations
   validates :name,  :presence => true,
                     :length   => { :maximum => 200 }
   
   validates :user_id, :presence => true
-                         
-  belongs_to :user
   
   default_scope :order => 'artefacts.name ASC'
   
-  # Paperclip
+  validates_attachment_size :photo, :less_than => 5.megabytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+  
+  ## Paperclip
   has_attached_file :photo,
     :default_url => "/images/rails.png",
     :styles => {
@@ -32,10 +43,13 @@ class Artefact < ActiveRecord::Base
       :url => "/images/:attachment/:id_:style.:extension",
       :path => ":rails_root/public/images/:attachment/:id_:style.:extension"
   }
-  validates_attachment_size :photo, :less_than => 5.megabytes
-  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif']
   
+  ## hooks
   before_save :make_artefactid
+  
+  def loaner?(user)
+    loans.find_by_loaner_id(user)
+  end
   
   private
   

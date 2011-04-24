@@ -20,11 +20,16 @@
 
 class User < ActiveRecord::Base
   
+  ## relationships
   has_many :artefacts, :dependent => :destroy
+  has_many :loans,  :foreign_key => "loaner_id"
+  has_many :loaned_items, :through => :loans, :source => :loaned
   
+  ## attributes
   attr_accessor :password
   attr_accessible :firstname, :lastname, :email, :address, :city, :postcode, :country, :mobile, :password, :password_confirmation
   
+  ## validations
   validates :firstname,  :presence => true,
                           :length   => { :maximum => 25 }
   
@@ -50,7 +55,7 @@ class User < ActiveRecord::Base
                         :format => { :with => phone_regex, :message => "Mobile number contains non-digits"}
                         
               
-                        
+  ## hooks                      
   before_save :encrypt_password
   before_save :make_userid
   
@@ -72,6 +77,20 @@ class User < ActiveRecord::Base
    # Return true if the user's password matches the submitted password.
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)
+  end
+  
+  # has user ever loaned 'artefact'? 
+  def loaned?(artefact)
+    loans.find_by_loaned_id(artefact)
+  end
+
+  def loan!(artefact)
+    loans.create!(:loaned_id => artefact.id)
+  end
+  
+  def unloan!(artefact)
+    # TODO: only for a certain date!!!
+    loans.find_by_loaned_id(artefact).destroy
   end
    
   

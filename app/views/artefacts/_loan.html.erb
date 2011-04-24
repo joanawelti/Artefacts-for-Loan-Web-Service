@@ -1,0 +1,5 @@
+<%= form_for current_user.loans.
+                          build(:loaned_id => @artefact.id) do |f| %>
+  <div><%= f.hidden_field :loaner_id %></div>
+  <div class="actions"><%= f.submit "Loan" %></div>
+<% end %>

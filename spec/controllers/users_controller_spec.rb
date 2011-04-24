@@ -375,6 +375,45 @@ describe UsersController do
         end
       end
     end
+    
+    describe "loan pages" do
+
+        describe "when not logged in" do
+
+          it "should protect 'myloans'" do
+            get :myloans, :id => 1
+            response.should redirect_to(login_path)
+          end
+
+          it "should protect 'myloanedartefacts'" do
+            get :myloanedartefacts, :id => 1
+            response.should redirect_to(login_path)
+          end
+        end
+
+        describe "when logged in" do
+
+          before(:each) do 
+            @user = Factory(:user)
+            test_log_in(@user)
+            @owner = Factory(:user, :email => Factory.next(:email))
+            @artefact1 = Factory(:artefact, :name => "AAA", :user => @owner)
+            @artefact2 = Factory(:artefact, :name => "BBB", :user => @user)
+            @user.loan!(@artefact1)
+            @owner.loan!(@artefact2)
+          end
+
+          it "should show loaned artefacts" do
+            get :myloans, :id => @user
+            response.should have_selector("a", :href => artefact_path(@artefact1))
+          end
+
+          pending "should show user followers" do
+            get :myloanedartefacts, :id => @user
+            response.should have_selector("a", :href => artefact_path(@artefact2))
+          end
+        end
+      end
 
 end    
 

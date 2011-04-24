@@ -1,13 +1,13 @@
 class ArtefactsController < ApplicationController
   
-  before_filter :authenticate, :only => [:create, :destroy, :new]
+  before_filter :authenticate
   before_filter :authorized_user, :only => :destroy
   
   
   # GET /artefacts
   # GET /artefacts.xml
   def index
-    if current_user.administrator
+    if current_user.admin?
       @artefacts = Artefact.all
     else 
       # only display artefacts that are visible

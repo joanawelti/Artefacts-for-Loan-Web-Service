@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_filter :authenticate, :only => [:edit, :update, :destroy, :index, "myartefacts"] #methods only for logged in users
+  before_filter :authenticate, :only => [:edit, :update, :destroy, :index, :myartefacts, :myloans, :loanedartefacts] #methods only for logged in users
   before_filter :correct_user, :only => [:edit, :update]  
   before_filter :authenticate_admin, :only => [:index, :destroy]
   
@@ -53,7 +53,19 @@ class UsersController < ApplicationController
   end
   
   def myartefacts
-    @artefacts = current_user.artefacts.paginate(:page => params[:page])
+    @title = "My artefacts"
+    @user = User.find(params[:id])
+    @artefacts = @user.artefacts.paginate(:page => params[:page])
+  end
+  
+  def myloanedartefacts
+    
+  end
+  
+  def myloans
+    @title = "My loans"
+    @user = User.find(params[:id])
+    @artefacts = @user.loaned_items.paginate(:page => params[:page])
   end
   
 end

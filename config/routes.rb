@@ -4,11 +4,12 @@ ArtefactsService::Application.routes.draw do
   resources :users
   resources :users do
     member do
-      get 'myartefacts'
+      get :myartefacts, :myloans, :myloanedartefacts
     end
   end
   
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :loans, :only => [:create, :destroy]
   
   match '/register',  :to => 'users#new'
   match '/login',     :to => 'sessions#new'

@@ -212,6 +212,7 @@ describe User do
     
     before(:each) do
       @user = User.create(@attr)
+      #test_log_in(@user)
       @art1 = Factory(:artefact, :name => "Kkk", :user => @user)
       @art2 = Factory(:artefact, :name => "Zzz", :user => @user)
       @art3 = Factory(:artefact, :name => "Aaa", :user => @user)
@@ -225,6 +226,12 @@ describe User do
       @user.artefacts.should == [@art3, @art1, @art2]
     end
     
+    it "should not include a different user's artefacts" do
+      art4 = Factory(:artefact, :name => "XYZ",
+                                :user => Factory(:user, :email => Factory.next(:email)))
+      @user.artefacts.include?(art4).should be_false
+    end
+    
     it "should destroy the associated artefacts when the user is deleted" do
       @user.destroy
       [@art1, @art2, @art3].each do |artefact|
@@ -236,29 +243,52 @@ describe User do
     end
     
   end
+      
+  describe "loans" do
+
+    before(:each) do
+      @user = User.create!(@attr)
+      @owner = Factory(:user, :email => Factory.next(:email))
+      @artefact = Factory(:artefact, :user => @owner)
+    end
+
+    it "should have a loan method" do
+      @user.should respond_to(:loans)
+    end
+    
+    it "should have a loaned method" do
+      @user.should respond_to(:loaned_items)
+    end
+    
+    it "should have a loaned? method" do
+      @user.should respond_to(:loaned?)
+    end
+
+    it "should have a loan! method" do
+      @user.should respond_to(:loan!)
+    end
+
+    it "should loan an artefact" do
+      @user.loan!(@artefact)
+      @user.should be_loaned(@artefact)
+    end
+
+    pending "should include the followed user in the loaned array" do
+      @user.loan!(@artefact)
+      @user.loaned_items.should include(@artefact)
+    end
+    
+    it "should have an unloan! method" do
+      @user.should respond_to(:unloan!)
+    end
+
+    it "should unloan an artefact" do
+      @user.loan!(@artefact)
+      @user.unloan!(@artefact)
+      @user.should_not be_loaned(@artefact)
+    end
   
-   describe "artefact associations" do
-
-        before(:each) do
-          @user = User.create(@attr)
-          @mp1 = Factory(:artefact, :user => @user, :name => "test1")
-          @mp2 = Factory(:artefact, :user => @user, :name => "test2")
-        end
-        
-        describe "properties" do
-
-          it "should include the user's artefacts" do
-            @user.artefacts.include?(@mp1).should be_true
-            @user.artefacts.include?(@mp2).should be_true
-          end
-
-          it "should not include a different user's artefacts" do
-            mp3 = Factory(:artefact,
-                          :user => Factory(:user, :email => Factory.next(:email)))
-            @user.artefacts.include?(mp3).should be_false
-          end
-        end
-      end
+  end
   
 end
 

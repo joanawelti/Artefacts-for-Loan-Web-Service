@@ -49,5 +49,32 @@ describe Artefact do
   
   end
 
+  describe "loans" do
+    before(:each) do
+      @owner = Factory(:user, :email => Factory.next(:email))
+      @artefact = @owner.artefacts.create(@attr)
+    end
+
+    it "should have a reverse_loan method" do
+       @artefact.should respond_to(:reverse_loans)
+    end
+    
+    it "should have a loaned method" do
+      @artefact.should respond_to(:loaners)
+    end
+    
+    it "should have a loaned? method" do
+      @artefact.should respond_to(:loaner?)
+    end    
+  
+
+    it "should include the user in the loaned array" do
+        @user.loan!(@artefact)
+        @artefact.loaners.should include(@user)
+    end
+    
+  
+  end
+
 
 end

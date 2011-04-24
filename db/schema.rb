@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110423212421) do
+ActiveRecord::Schema.define(:version => 20110423221225) do
 
   create_table "artefacts", :force => true do |t|
     t.string   "artefactid"
@@ -28,6 +28,18 @@ ActiveRecord::Schema.define(:version => 20110423212421) do
   end
 
   add_index "artefacts", ["user_id"], :name => "index_artefacts_on_user_id"
+
+  create_table "loans", :force => true do |t|
+    t.integer  "loaner_id"
+    t.integer  "loaned_id"
+    t.date     "from"
+    t.date     "to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "loans", ["loaned_id"], :name => "index_loans_on_loaned_id"
+  add_index "loans", ["loaner_id"], :name => "index_loans_on_loaner_id"
 
   create_table "users", :force => true do |t|
     t.string   "userid"
