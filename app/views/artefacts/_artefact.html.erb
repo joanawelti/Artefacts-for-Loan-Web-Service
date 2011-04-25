@@ -1,11 +1,11 @@
 <tr>
-	<table class="artefact_item">
+	<table class="enum">
 		<tr>
 			<td>
 				<h3><%= artefact.artefactid %></h3>
 			</td>
 			<td>
-				<span  class="artefact_links">
+				<span  class="action_links">
 					<%= link_to "show", artefact_path(artefact) %>
 					<%= link_to "edit", edit_artefact_path(artefact) %>
 					<% user = artefact.user rescue User.find(artefact.user_id) %>

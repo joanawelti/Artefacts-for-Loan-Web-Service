@@ -24,7 +24,6 @@ class ArtefactsController < ApplicationController
   # GET /artefacts/1.xml
   def show
     @artefact = Artefact.find(params[:id])
-    @comments = @artefact.comments.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -55,7 +54,7 @@ class ArtefactsController < ApplicationController
     @artefact = current_user.artefacts.build(params[:artefact])
     if @artefact.save
       flash[:success] = "Artefact created successfully"
-      redirect_to edit_user_path(current_user)
+      redirect_to myartefacts_user_path(current_user)
     else
       @title = "New Artefact"
       render 'new'
@@ -83,6 +82,21 @@ class ArtefactsController < ApplicationController
     @artefact.destroy      
     flash[:success] = "Artefact deleted successfully"
     redirect_back_or artefacts_path
+  end
+  
+  def review
+    @title ="Artefact Reviews"
+    @artefact = Artefact.find(params[:id])
+    @comments = @artefact.comments.paginate(:page => params[:page])
+  end
+  
+  def addreview
+    @artefact = Artefact.find(params[:id])
+    @comment = Comment.new
+    @title = "New comment"
+  end
+  
+  def loan
   end
 
   private

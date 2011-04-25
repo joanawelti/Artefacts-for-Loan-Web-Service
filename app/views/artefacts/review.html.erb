@@ -1,0 +1,16 @@
+<p id="notice"><%= notice %></p>
+<h1>Artefact Reviews</h1>
+
+<table>
+<%= render :partial => "artefact_item_short", :object => @artefact %>
+</table>
+
+<%= link_to 'Add review', addreview_artefact_path(@artefact) %>
+
+<% unless @artefact.comments.empty? %>
+	<table class="comments" summary="Artefact's comments">
+        <%= render @comments %>
+    </table>
+    <%= will_paginate @comments %>
+<% end %>
+<%= link_to 'Back', artefact_path(@artefact) %>

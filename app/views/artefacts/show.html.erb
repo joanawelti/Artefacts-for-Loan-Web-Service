@@ -1,16 +1,23 @@
+<h1>Artefact Details</h1>
 <p id="notice"><%= notice %></p>
 
 <table>
-<%= render :partial => "artefact_item_short", :object => @artefact %>
+	<tr>
+		<td colspan="3">
+			<span class="artefact_id"><h3>Artefact <%= @artefact.artefactid %></h3></span>
+		</td>
+	</tr>
+	<%= render :partial => "artefact_item_long", :object => @artefact %>
+	<tr>
+		<td>Owner: <%= @artefact.user.userid %></td>
+		<td colspan="2">
+			<span class="action_links">
+				<%= link_to 'Add loan', loan_artefact_path(@artefact) %>
+				<%= link_to 'Reviews', review_artefact_path(@artefact) %>
+			</span>
+		</td>
+	</tr>
 </table>
 
-<% unless @artefact.comments.empty? %>
-	<table class="comments" summary="Artefact's comments">
-        <%= render @comments %>
-    </table>
-    <%= will_paginate @comments %>
-<% end %>
-
-
 <%= link_to 'Edit', edit_artefact_path(@artefact) %> |
-<%= link_to 'Back', artefacts_path %>
+<%= link_to 'Back', :back %>

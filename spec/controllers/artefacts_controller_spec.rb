@@ -143,16 +143,33 @@ describe ArtefactsController do
           get :show, :id => @artefact
           response.should have_selector("img", :class => "artefact_image")
       end
+
+    end
+  
+    describe "GET 'review'" do
       
+      before(:each) do
+        @user = test_log_in(Factory(:user))
+        @artefact = Factory(:artefact, :user => @user) 
+      end
+
       it "should show the artefact's comments" do
         c1 = Factory(:comment, :user => @user, :artefact => @artefact ,:content => "Foo bar")
         c2 = Factory(:comment, :user => @user, :artefact => @artefact, :content => "Baz quux")
-        get :show, :id => @artefact
+        get :review, :id => @artefact
         response.should have_selector("span.content", :content => c1.content)
         response.should have_selector("span.content", :content => c2.content)
       end
-    end
-  
+      
+      it "should only show the artefact's comments" do
+        new_user = Factory(:user, :email => Factory.next(:email))
+        a2 = Factory(:artefact, :user => new_user, :name => "Other artefact")
+        c1 = Factory(:comment, :user => new_user, :artefact => a2 ,:content => "Foo bar")
+        get :review, :id => @artefact
     
+        response.should_not have_selector("span.content", :content => c1.content)
+      end
+    
+    end
     
 end

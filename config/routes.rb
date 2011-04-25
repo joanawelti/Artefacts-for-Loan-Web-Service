@@ -2,11 +2,13 @@ ArtefactsService::Application.routes.draw do
   
   get "pages/home"
 
-  get "pages/contact"
-
-  get "pages/about"
-
   resources :artefacts
+  resources :artefacts do
+    member do
+      get :review, :loan, :addreview
+    end
+  end
+  
   resources :users
   resources :users do
     member do
@@ -16,11 +18,13 @@ ArtefactsService::Application.routes.draw do
   
   resources :sessions, :only => [:new, :create, :destroy]
   resources :loans, :only => [:create, :destroy]
-  resources :comments, :only => [:create, :edit, :destroy]
+  resources :comments, :except => [:index, :new]
   
   match '/register',  :to => 'users#new'
   match '/login',     :to => 'sessions#new'
-  match '/logout',    :to => 'sessions#destroy'    
+  match '/logout',    :to => 'sessions#destroy'   
+  match '/contact',   :to => 'pages#contact'
+  match '/about',     :to => 'pages#about'    
   #match 'users/:id/myartefacts', :to => 'users#myartefacts'
 
   # The priority is based upon order of creation:
