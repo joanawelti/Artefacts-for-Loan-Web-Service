@@ -84,16 +84,11 @@ class ArtefactsController < ApplicationController
     redirect_back_or artefacts_path
   end
   
-  def review
+  def reviews
     @title ="Artefact Reviews"
     @artefact = Artefact.find(params[:id])
     @comments = @artefact.comments.paginate(:page => params[:page])
-  end
-  
-  def addreview
-    @artefact = Artefact.find(params[:id])
     @comment = Comment.new
-    @title = "New comment"
   end
   
   def loan

@@ -3,11 +3,12 @@ h1 {
 }
 
 h2 {
-  font-size: 160%;
+	font-size: 160%;
+	margin-bottom: 0.5em;
 }
 
 h3 {
-  	font-size: 120%;
+  font-size: 120%;
 	font-weight: bold;
 	margin: 0.3em 0;
 }
@@ -229,7 +230,7 @@ ul.users {
 }
 
 /**
-*	Enumeration of itmes
+*	Enumeration of items
 */
 table.enum {
 	border: 1px solid #CCCCCC;
@@ -249,4 +250,24 @@ table.enum {
 
 .action_links a {
 	margin-left: 0.8em;
+}
+
+/**
+*	Comments
+*/
+.new_comment {
+	margin-bottom: 2em;
+}
+.comment_content {
+	height: 100px;
+	width: 80%;
+	margin-top: 0;
+}
+
+/**
+*		Artefacts
+*/
+
+.artefact_item_short {
+	margin-bottom: 2em;
 }

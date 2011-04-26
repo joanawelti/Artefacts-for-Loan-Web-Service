@@ -4,28 +4,6 @@ describe CommentsController do
   
   render_views
   
-  describe "GET 'new'" do
-    describe "as a non-logged in user" do
-    
-      it "should deny access" do
-        get :new
-        response.should redirect_to(login_path)
-      end
-    end
-    
-    describe "as a logged in user" do
-      before(:each) do
-        @user = test_log_in(Factory(:user))
-      end
-    
-      it "should be successful" do
-        get :new
-        response.should be_success
-      end
-    
-    end
-  
-  end
   
   describe "POST 'create'" do
     

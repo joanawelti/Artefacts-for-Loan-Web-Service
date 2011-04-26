@@ -7,10 +7,10 @@ class CommentsController < ApplicationController
       @comment  = current_user.comments.build(params[:comment])
       if @comment.save
         flash[:success] = "Comment was created"
-        redirect_to review_artefact_path(@comment.artefact)
+        redirect_to reviews_artefact_path(@comment.artefact)
       elsif !params[:comment][:artefact_id].blank?
         @title = "New comment"
-        render addreview_artefact_path(Artefact.find(params[:comment][:artefact_id]))  
+        render reviews_artefact_path(Artefact.find(params[:comment][:artefact_id]))  
       else
         @title = "New coment"
         render 'pages/home'
