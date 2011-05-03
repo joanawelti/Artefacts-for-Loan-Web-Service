@@ -66,7 +66,7 @@ describe SessionsController do
         test_log_in(Factory(:user))
         delete :destroy
         controller.should_not be_logged_in
-        response.should redirect_to(root_path)
+        response.should redirect_to(login_path)
       end
   
     end

@@ -18,20 +18,25 @@ describe LoansController do
   describe "POST 'create'" do
 
     before(:each) do
-      @user = test_log_in(Factory(:user))
+      @user = Factory(:user)
+      test_log_in(@user)
+      
       @owner = Factory(:user, :email => Factory.next(:email))
       @artefact = Factory(:artefact, :user => @owner) 
+    
+      @loan_start = get_loan_start_date
+      @loan_end = get_loan_end_date(@loan_start)
+      @attr = { :artefact_id => @artefact.id, :loan_start => @loan_start, :loan_end => @loan_end }
     end
 
     it "should create a loan" do
       lambda do
-        post :create, :loan => { :loaned_id => @artefact }
-        response.should be_redirect
+        post :create, :loan => @attr
       end.should change(Loan, :count).by(1)
     end
   end
 
-  describe "DELETE 'destroy'" do
+  pending "DELETE 'destroy'" do
 
     before(:each) do
       @user = test_log_in(Factory(:user))

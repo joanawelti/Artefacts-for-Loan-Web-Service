@@ -4,7 +4,70 @@ describe ArtefactsController do
   render_views
 
   describe "GET index" do
+    describe "as a non-logged-in user" do
+      it "should deny access" do
+        get :index
+        response.should redirect_to(login_path)
+      end
+    end
     
+    
+    describe "as a logged in user" do
+      
+      before(:each) do
+        @user = Factory(:user)
+        @second_user = Factory(:user, :email => Factory.next(:email))
+        @a1 = Factory(:artefact, :user => @user, :name => "AAA")
+        @a2 = Factory(:artefact, :user => @second_user, :name => "BBB")
+        @a3 = Factory(:artefact, :user => @second_user, :name => "CCC")
+        
+        test_log_in(@user)
+      end
+      
+      
+      it "should be successful" do
+        get :index
+        response.should be_success
+      end
+      
+      it "should have the right title" do
+          get :index
+          response.should have_selector("title", :content => "Artefacts")
+      end
+      
+      it "should list all artefacts" do
+        get :index
+        response.should have_selector("h3", :content => @a2.artefactid)
+        response.should have_selector("h3", :content => @a3.artefactid)
+      end
+      
+      it "should not list the user's artefacts" do
+        get :index
+        response.should_not have_selector("h3", :content => @a1.artefactid)
+      end
+      
+      it "should not list hidden artefacts" do
+        a4 = Factory(:artefact, :user => @second_user, :name => "DDD", :visible => false)
+        get :index
+        response.should_not have_selector("h3", :content => a4.artefactid)
+      end
+        
+    end
+    
+    describe "as a logged in administrator" do
+      
+      before(:each) do
+        @user = Factory(:user)
+        @admin = Factory(:user, :email => "admin@test.com", :administrator => true)
+        test_log_in(@admin)
+      end
+      
+      it "should display invisible artefacts" do
+        a1 = Factory(:artefact, :user => @user, :name => "DDD", :visible => false)
+        get :index
+        response.should have_selector("h3", :content => a1.artefactid)
+      end
+    end
   end
   
   describe "GET new" do

@@ -1,30 +1,12 @@
-<h1>Listing artefacts</h1>
-
-<table>
-  <tr>
-    <th>Artefactid</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<h1>Artefacts</h1>
 
 <% @artefacts.each do |artefact| %>
-  <tr>
-    <td><%= artefact.artefactid %></td>
-    <td><%= artefact.name %></td>
-    <td><%= artefact.description %></td>
-    <td><%= link_to 'Show', artefact %></td>
-    <td><%= link_to 'Edit', edit_artefact_path(artefact) %></td>
-	<td><%= link_to "delete", artefact, :method => :delete,
-                                     :confirm => "You sure?",
-                                     :title => artefact.name %>
-	</td>
-  </tr>
-<% end %>
+<table class="enum">
+  	<tr>
+    	<td><h3><%= artefact.artefactid %></h3></td>
+		<td>Owner: <%= artefact.user.userid %></td>
+	</tr>
+	<%= render :partial => "artefact_item_short", :object => artefact %>
 </table>
-
+<% end %>
 <br />
-
-<%= link_to 'New Artefact', new_artefact_path %>

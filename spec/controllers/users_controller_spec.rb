@@ -357,7 +357,7 @@ describe UsersController do
       
       describe "as a non-logged-in user" do
         it "should deny access" do
-          get :myartefacts
+          get :myartefacts, :id => 1
           response.should redirect_to(login_path)
         end
       end
@@ -370,7 +370,7 @@ describe UsersController do
         end
 
         it "should have the right title" do
-          get :myartefacts
+          get :myartefacts, :id => @user
           response.should have_selector("title", :content => "My artefacts")
         end
       end
@@ -384,11 +384,6 @@ describe UsersController do
             get :myloans, :id => 1
             response.should redirect_to(login_path)
           end
-
-          it "should protect 'myloanedartefacts'" do
-            get :myloanedartefacts, :id => 1
-            response.should redirect_to(login_path)
-          end
         end
 
         describe "when logged in" do
@@ -399,8 +394,10 @@ describe UsersController do
             @owner = Factory(:user, :email => Factory.next(:email))
             @artefact1 = Factory(:artefact, :name => "AAA", :user => @owner)
             @artefact2 = Factory(:artefact, :name => "BBB", :user => @user)
-            @user.loan!(@artefact1)
-            @owner.loan!(@artefact2)
+            @loan_start = get_loan_start_date
+            @loan_end = get_loan_end_date(@loan_start)
+            @user.loan!(@artefact1, @loan_start, @loan_end)
+            @owner.loan!(@artefact2, @loan_start, @loan_end)
           end
 
           it "should show loaned artefacts" do

@@ -58,10 +58,6 @@ class UsersController < ApplicationController
     @artefacts = @user.artefacts.paginate(:page => params[:page])
   end
   
-  def myloanedartefacts
-    
-  end
-  
   def myloans
     @title = "My loans"
     @user = User.find(params[:id])

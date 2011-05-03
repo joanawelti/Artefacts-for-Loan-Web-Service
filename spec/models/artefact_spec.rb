@@ -6,7 +6,8 @@ describe Artefact do
     @user = Factory(:user) # every artefact belongs to a user
     @attr = {
       :name => "Test Artifact",
-      :description => "Test Artifact to demonstrate functionality of Artefact Model"
+      :description => "Test Artifact to demonstrate functionality of Artefact Model",
+      :visible => true,
     }
   end
   
@@ -53,6 +54,8 @@ describe Artefact do
     before(:each) do
       @owner = Factory(:user, :email => Factory.next(:email))
       @artefact = @owner.artefacts.create(@attr)
+      @loan_start = get_loan_start_date
+      @loan_end = get_loan_end_date(@loan_start)
     end
 
     it "should have a reverse_loan method" do
@@ -69,7 +72,7 @@ describe Artefact do
   
 
     it "should include the user in the loaned array" do
-        @user.loan!(@artefact)
+        @user.loan!(@artefact, @loan_start, @loan_end)
         @artefact.loaners.should include(@user)
     end
   
@@ -89,7 +92,7 @@ describe Artefact do
       @artefact.should respond_to(:comments)
     end
 
-    it "should have the right microposts in the right order" do
+    it "should have the right comments in the right order" do
       @artefact.comments.should == [@c2, @c1]
     end
     

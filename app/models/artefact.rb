@@ -15,9 +15,9 @@ class Artefact < ActiveRecord::Base
   
   ## relationships
   belongs_to :user
-  has_many :reverse_loans,  :foreign_key => "loaned_id",
+  has_many :reverse_loans,  :foreign_key => "artefact_id",
                             :class_name => "Loan"
-  has_many :loaners, :through => :reverse_loans
+  has_many :loaners, :through => :reverse_loans, :source => :user
   has_many :comments, :dependent => :destroy
   
   
@@ -34,13 +34,14 @@ class Artefact < ActiveRecord::Base
   
   validates_attachment_size :photo, :less_than => 5.megabytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+   
   
   ## Paperclip
   has_attached_file :photo,
-    :default_url => "/images/rails.png",
+    :default_url => "/images/empty_:style.png",
     :styles => {
       :thumb=> "100x100#",
-      :small  => "300x300",
+      :small  => "200x200",
       :url => "/images/:attachment/:id_:style.:extension",
       :path => ":rails_root/public/images/:attachment/:id_:style.:extension"
   }

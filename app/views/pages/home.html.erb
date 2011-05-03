@@ -1,2 +1,17 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<h1>Artefacts</h1>
+
+<% unless @artefacts.nil? %>
+<% @artefacts.each do |artefact| %>
+<table class="enum">
+  	<tr>
+    	<td><h3><%= artefact.artefactid %></h3></td>
+		<td>
+			Owner: <%= artefact.user.userid %>
+			<span class="action_links"><%= link_to "Details", artefact_path(artefact) %></span>
+			</td>
+	</tr>
+	<%= render :partial => "artefacts/artefact_item_short", :object => artefact %>
+</table>
+<% end %>
+<% end %>
+<br />

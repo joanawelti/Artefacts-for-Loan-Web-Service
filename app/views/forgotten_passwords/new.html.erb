@@ -1,0 +1,18 @@
+<h1>Forgotten password</h1>
+<%= form_for(:forgotten_password, :url => forgotten_passwords_path) do |f| %>
+	<fieldset>
+		<ul class="user_data">
+			<li>
+  				<div class="field">
+				    <div><%= f.label :email %></div>
+				    <%= f.text_field :email %>
+				  </div>
+			</li>
+		</ul>
+	</fieldset>
+	<div class="actions">
+	    <%= f.submit "Submit" %>
+		<%= f.submit "Cancel", :type => "button", :onclick => "this.form.reset()", :class => "reset" %>
+	</div>
+<% end %>
+<%= link_to "Back", :back %>

@@ -1,0 +1,17 @@
+<h1>Artefact Loan and History</h1>
+<p id="notice"><%= notice %></p>
+
+<table>
+	<tr>
+		<td>
+			<span class="artefact_id"><h3>Artefact <%= @artefact.artefactid %></h3></span>
+		</td>
+		<td colspan="2">
+			Owner: <%= @artefact.user.userid %>
+		</td>
+	</tr>
+	<%= render :partial => "artefact_item_long", :object => @artefact %>
+</table>
+
+<h3>New loan</h3>
+<%= render :partial => "shared/loan", :object => @artefact %>

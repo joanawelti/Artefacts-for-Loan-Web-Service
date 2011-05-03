@@ -9,13 +9,19 @@
     	<%= f.text_area :description %>
   	</div>
 	<div class="field">
-		<%= f.file_field :photo %> 
+		<%= f.label :photo %><br />
+		<%= f.file_field :photo, :class => "photo_upload" %> 
+		<%= "Current photo: #{@artefact.photo_file_name}" unless @artefact.photo_file_name.nil? %>
 	</div>
-	<div>
+	<div class="field visibility">
+		<span><b>Visibility</b></span><br />
 		<%= f.label :visible, 'Show', :value => "true" %>
 		<%= f.radio_button :visible, "true", :checked => true %> 
 		<%= f.label :visible, 'Hide', :value => "false" %>
 		<%= f.radio_button :visible, "false" %>
+	</div>
+	<div class="field locator">
+		<span><b>Locator</b></span><br />
 	</div>
   <div class="actions">
     <%= f.submit "Update" %>

@@ -50,6 +50,8 @@ GEM
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
     polyglot (0.3.1)
+    pony (1.2)
+      mail (> 2.0)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
@@ -86,9 +88,12 @@ GEM
     sqlite3-ruby (1.3.3)
       sqlite3 (>= 1.3.3)
     thor (0.14.6)
+    timeliness (0.3.3)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.24)
+    validates_timeliness (3.0.5)
+      timeliness (~> 0.3.2)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -102,9 +107,11 @@ DEPENDENCIES
   annotate-models (= 1.0.4)
   factory_girl_rails (= 1.0.1)
   paperclip
+  pony
   rails (= 3.0.3)
   rspec (= 2.4.0)
   rspec-rails (= 2.4.1)
   sqlite3-ruby
+  validates_timeliness
   webrat (= 0.7.3)
   will_paginate (= 3.0.pre2)

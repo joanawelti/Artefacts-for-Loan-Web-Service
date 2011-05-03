@@ -7,11 +7,12 @@ class ArtefactsController < ApplicationController
   # GET /artefacts
   # GET /artefacts.xml
   def index
+    @title = "Artefacts"
     if current_user.admin?
       @artefacts = Artefact.all
     else 
       # only display artefacts that are visible
-      @artefacts = Artefact.where(['visible=?', true])
+      @artefacts = Artefact.where(['visible=? and not user_id=?', true, current_user.id])
     end
 
     respond_to do |format|
@@ -68,7 +69,7 @@ class ArtefactsController < ApplicationController
 
     respond_to do |format|
       if @artefact.update_attributes(params[:artefact])
-        format.html { redirect_to(@artefact, :notice => 'Artefact was successfully updated.') }
+        format.html { redirect_to(edit_artefact_path(@artefact), :notice => 'Artefact was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -92,6 +93,7 @@ class ArtefactsController < ApplicationController
   end
   
   def loan
+    @artefact = Artefact.find(params[:id])
   end
 
   private

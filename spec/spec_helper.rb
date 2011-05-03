@@ -28,4 +28,12 @@ RSpec.configure do |config|
   def test_log_in(user)
     controller.log_in(user)
   end
+  
+  def get_loan_start_date
+    Date.current
+  end
+  
+  def get_loan_end_date(start_date)
+    start_date + 1.month
+  end
 end

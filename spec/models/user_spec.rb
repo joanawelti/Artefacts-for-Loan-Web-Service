@@ -16,7 +16,9 @@ describe User do
               :country => "UK", 
               :mobile => "077 574 27217",
               :password => "passwordForExample", 
-              :password_confirmation => "passwordForExample" }
+              :password_confirmation => "passwordForExample",
+              :lat => 24.5678,
+              :long => 56.789245 }
   end
 
 # creation
@@ -117,6 +119,25 @@ describe User do
     it "should require a country" do
         no_country_user = User.new(@attr.merge(:country => ""))
         no_country_user.should_not be_valid
+    end
+  end
+  
+   # coordinates
+  describe "coordinates" do
+    it "should  have a lattitude value that lies in the range [-90,90]" do
+      wrong_lat_user = User.new(@attr.merge(:lat => 91))
+      wrong_lat_user.should_not be_valid
+      
+      wrong_lat_user = User.new(@attr.merge(:lat => -91))
+      wrong_lat_user.should_not be_valid
+    end
+      
+    it "should  have a longitude value that lies in the range [-180,180]" do
+      wrong_long_user = User.new(@attr.merge(:long => 181.0))
+      wrong_long_user.should_not be_valid
+      
+      wrong_long_user = User.new(@attr.merge(:long => -181.0))
+      wrong_long_user.should_not be_valid
     end
   end
   
@@ -250,6 +271,8 @@ describe User do
       @user = User.create!(@attr)
       @owner = Factory(:user, :email => Factory.next(:email))
       @artefact = Factory(:artefact, :user => @owner)
+      @loan_start = get_loan_start_date
+      @loan_end = get_loan_end_date(@loan_start)
     end
 
     it "should have a loan method" do
@@ -268,24 +291,37 @@ describe User do
       @user.should respond_to(:loan!)
     end
 
-    it "should loan an artefact" do
-      @user.loan!(@artefact)
-      @user.should be_loaned(@artefact)
-    end
+    describe "the loaning process" do
+      before(:each) do
+        @user.loan!(@artefact, @loan_start, @loan_end)
+      end
+      
+      it "should loan an artefact" do    
+        @user.should be_loaned(@artefact)
+      end
 
-    pending "should include the followed user in the loaned array" do
-      @user.loan!(@artefact)
-      @user.loaned_items.should include(@artefact)
+      it "should include the followed user in the loaned array" do
+        @user.loaned_items.should include(@artefact)
+      end
+      
+      it "should have the right loans in the right order" do
+        artefact2 = Factory(:artefact, :user => @owner, :name => "BBB")
+        @user.loan!(artefact2, @loan_start, @loan_end)
+        @user.loans.first.artefact_id.should == artefact2.id
+        @user.loans.second.artefact_id.should == @artefact.id
+      end
     end
     
-    it "should have an unloan! method" do
-      @user.should respond_to(:unloan!)
-    end
+    describe "the unloaning process" do
+      it "should have an unloan! method" do
+        @user.should respond_to(:unloan!)
+      end
 
-    it "should unloan an artefact" do
-      @user.loan!(@artefact)
-      @user.unloan!(@artefact)
-      @user.should_not be_loaned(@artefact)
+      it "should unloan an artefact" do
+        @user.loan!(@artefact, @loan_start, @loan_end)
+        @user.unloan!(@artefact)
+        @user.should_not be_loaned(@artefact)
+      end
     end
   
   end

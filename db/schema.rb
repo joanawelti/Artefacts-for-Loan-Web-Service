@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110424182421) do
+ActiveRecord::Schema.define(:version => 20110503202716) do
 
   create_table "artefacts", :force => true do |t|
     t.string   "artefactid"
@@ -22,8 +22,6 @@ ActiveRecord::Schema.define(:version => 20110424182421) do
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
-    t.float    "long"
-    t.float    "lat"
     t.boolean  "visible",            :default => true
   end
 
@@ -40,16 +38,16 @@ ActiveRecord::Schema.define(:version => 20110424182421) do
   add_index "comments", ["artefact_id"], :name => "index_comments_on_artefact_id"
 
   create_table "loans", :force => true do |t|
-    t.integer  "loaner_id"
-    t.integer  "loaned_id"
-    t.date     "from"
-    t.date     "to"
+    t.integer  "user_id"
+    t.integer  "artefact_id"
+    t.date     "loan_start"
+    t.date     "loan_end"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "loans", ["loaned_id"], :name => "index_loans_on_loaned_id"
-  add_index "loans", ["loaner_id"], :name => "index_loans_on_loaner_id"
+  add_index "loans", ["artefact_id"], :name => "index_loans_on_loaned_id"
+  add_index "loans", ["user_id"], :name => "index_loans_on_loaner_id"
 
   create_table "users", :force => true do |t|
     t.string   "userid"

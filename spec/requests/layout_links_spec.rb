@@ -66,12 +66,6 @@ describe "LayoutLinks" do
                                               :content => "My loans" )
       end
       
-      it "should have a link to the user's loaned artefacts" do
-          visit root_path
-          response.should have_selector("a", :href => myloanedartefacts_user_path(@user),
-                                              :content => "My loaned artefacts" )
-      end
-      
 
     end
   

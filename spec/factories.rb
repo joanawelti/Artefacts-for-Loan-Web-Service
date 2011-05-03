@@ -11,6 +11,8 @@ Factory.define :user do |user|
   user.mobile                 "07756734344"
   user.password               "examplepassword"
   user.password_confirmation  "examplepassword"
+  user.long                   12.574833
+  user.lat                    25.234513
 end
 
 Factory.sequence :email do |n|
@@ -30,4 +32,12 @@ Factory.define :comment do |comment|
   comment.content "Foo bar"
   comment.association :user 
   comment.association :artefact
+end
+
+Factory.define :loan do |loan| 
+  now = Date.today
+  loan.association :user
+  loan.association :artefact
+  loan.loan_start now
+  loan.loan_end now + 1.month
 end

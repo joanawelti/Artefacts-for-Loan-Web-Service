@@ -20,11 +20,12 @@ h4 {
 
 
 .container {
-  width: 800px;
+	width: 80%;
+  max-width: 1100px;
 }
 
 body {
-  background: #aca0cb;
+  background: url('../images/bg_blue.png') repeat-x fixed left top #4D87C7;
   font-family: arial,helvetica,sans-serif;
 }
 
@@ -46,6 +47,14 @@ section {
   font-size: 120%;
   padding: 20px;
   background: #fff;
+}
+
+.field {
+	margin-bottom: 0.5em;
+}
+
+fieldset {
+	width: 80%;
 }
 
 
@@ -214,7 +223,7 @@ a.right_link {
 }
 
 div.actions {
-	margin-bottom: 1em;
+	margin: 1em 0;
 }
 
 input.reset {
@@ -270,4 +279,25 @@ table.enum {
 
 .artefact_item_short {
 	margin-bottom: 2em;
+}
+
+.edit_artefact textarea {
+	width:80%;
+}
+
+.photo_upload {
+	margin-bottom: 1em;
+}
+
+.visibility span {
+	margin-right: 1em;
+}
+
+.visibility label, .locator label {
+	font-weight: normal;
+}
+
+.locator input {
+	margin-left: 0.5em;
+	margin-right:2em;
 }

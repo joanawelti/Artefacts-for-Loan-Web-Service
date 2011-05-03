@@ -11,6 +11,7 @@ describe CommentsController do
       @user = Factory(:user)
       @owner = Factory(:user, :email => Factory.next(:email))
       @artefact = Factory(:artefact, :user => @owner)
+      @attr = { :content => "Test comment", :artefact_id => @artefact.id }
     end
 
     describe "as a non-logged in user" do
@@ -26,48 +27,6 @@ describe CommentsController do
       before(:each) do
         test_log_in(@user)
       end
-      
-      describe "failure because no artefact present" do
-
-        before(:each) do
-          @attr = { :content => "Bla", :artefact_id => "" }
-        end
-
-        it "should not create a comment" do
-          lambda do
-            post :create, :comment => @attr
-          end.should_not change(Comment, :count)
-        end
-
-        it "should render the home page" do
-          post :create, :comment => @attr
-          response.should render_template('pages/home')
-        end
-      end
-    
-      describe "failure because no artefact present" do
-
-        before(:each) do
-          @attr = { :content => "", :artefact_id => @artefact.id }
-        end
-
-        it "should not create a comment" do
-          lambda do
-            post :create, :comment => @attr
-          end.should_not change(Comment, :count)
-        end
-
-        it "should render the new comment page" do
-          post :create, :comment => @attr
-          response.should render_template('new')
-        end
-      end
-
-      describe "success" do
-
-        before(:each) do
-          @attr = { :content => "Test comment", :artefact_id => @artefact.id }
-        end
 
         it "should create a comment" do
           lambda do
@@ -77,14 +36,13 @@ describe CommentsController do
 
         it "should redirect to the artefact's page" do
           post :create, :comment => @attr
-          response.should redirect_to(artefact_path(@artefact))
+          response.should redirect_to(reviews_artefact_path(@artefact))
         end
 
         it "should have a flash message" do
           post :create, :comment => @attr
           flash[:success].should =~ /created/i
         end
-      end
     end
   end
   

@@ -12,8 +12,7 @@ class CommentsController < ApplicationController
         @title = "New comment"
         render reviews_artefact_path(Artefact.find(params[:comment][:artefact_id]))  
       else
-        @title = "New coment"
-        render 'pages/home'
+        render root_page
       end
     end
 
