@@ -10,6 +10,7 @@ gem 'will_paginate', '3.0.pre2'
 gem 'paperclip'
 gem 'validates_timeliness'
 gem 'pony'
+gem 'gmaps4rails'
 
 group :development do
 	gem 'rspec-rails', '2.4.1'

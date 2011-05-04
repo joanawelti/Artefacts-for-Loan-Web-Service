@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110503202716) do
+ActiveRecord::Schema.define(:version => 20110504094329) do
 
   create_table "artefacts", :force => true do |t|
     t.string   "artefactid"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(:version => 20110503202716) do
     t.date     "loan_end"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active",      :default => true
   end
 
   add_index "loans", ["artefact_id"], :name => "index_loans_on_loaned_id"
@@ -64,8 +65,8 @@ ActiveRecord::Schema.define(:version => 20110503202716) do
     t.datetime "updated_at"
     t.string   "encrypted_password"
     t.string   "salt"
-    t.float    "long"
     t.float    "lat"
+    t.float    "long"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -1,6 +1,7 @@
 class LoansController < ApplicationController
 
   before_filter :authenticate
+  before_filter :authorized_user, :only => :destroy  
 
   def create
     @artefact = Artefact.find(params[:loan][:artefact_id])
@@ -9,31 +10,53 @@ class LoansController < ApplicationController
     current_user.loan!(@artefact, start_date, end_date)
     
     if current_user.loaned?(@artefact)
-      inform_owner(@artefact)
-      flash[:success] = "You have successfully made a request to loan artefact #{@artefact.artefactid} for the period of #{Date.parse(start_date.to_s).strftime("%a, %d %b %Y")} to #{Date.parse(start_date.to_s).strftime("%a, %d %b %Y")}. User #{@artefact.user.userid} will contact you shortly"
-      # #{Date.parse(start_date).strftime("%a, %d %b %Y")}
-      redirect_to root_path
+      inform_owner(@artefact, start_date, end_date)
+      inform_loaner(@artefact, start_date, end_date)
+      flash[:success] = "You have successfully made a request to loan artefact #{@artefact.artefactid} for the period of #{Date.parse(start_date.to_s).strftime("%a, %d %b %Y")} to #{Date.parse(start_date.to_s).strftime("%a, %d %b %Y")} \n. User #{@artefact.user.userid} will contact you shortly"
     else
-      flash[:error] = "There was an error with your request. Please try again later."
-      redirect_to artefact_path(@artefact)
+      flash[:error] = "There was an error with your request. Please try again later."    
     end
+    redirect_to root_path
   end
 
   def destroy
-    @artefact = Loan.find(params[:id]).artefact_id
-    current_user.unloan!(@artefact)
+    loan = Loan.find(params[:id])
+    @artefact = Artefact.find(loan.artefact_id)
+    @artefact.unloan!
+    if !loan.user.loaned?(@artefact)
+      flash[:success] = "Loan successfully ended"
+    else 
+      flash[:error] = "There was an error with your request. Please try again later."
+    end
     redirect_to root_path
   end
   
   private
+    def authorized_user
+      @artefact = Artefact.find(Loan.find(params[:id]).artefact_id)
+      redirect_to root_path unless current_user?(@artefact.user) or current_user.administrator?
+    end
 
-    def inform_owner(artefact)
-      from = "jlj3l"
-      to = "sfsdf"
+    def inform_loaner(artefact, start_date, end_date)
+      Pony.mail(:to => current_user.email, 
+                :from => 'artefactsloanservice@example.com', 
+                :subject => 'Loan request for #{artefact.artefactid}',
+                :html_body => 'You have just made a loan request for artefact #{artefact.artefactid} (#{start_date} - #{end_date}). <br />
+                              The owner of this artefact will contact you shortly to arrange the hand over of the item.
+                              <br /> <br />
+                              Your Artefacts Loan Service', 
+                :body =>      'You have just made a loan request for artefact #{artefact.artefactid} (#{start_date} - #{end_date}).
+                              The owner of this artefact will contact you shortly to arrange the hand over of the item.
+                              
+                              Your Artefacts Loan Service',
+                :via => :sendmail)
+    end
+
+    def inform_owner(artefact, start_date, end_date)
       Pony.mail(:to => artefact.user.email, 
                 :from => 'artefactsloanservice@example.com', 
                 :subject => 'New loan request for #{artefact.artefactid}',
-                :html_body => 'You have a new loan request for artefact #{artefact.artefactid} (#{from} - #{to})! <br /><br />
+                :html_body => 'You have a new loan request for artefact #{artefact.artefactid} (#{start_date} - #{end_date})! <br /><br />
                                 User: #{user.userid} <br/>
                                 Name: #{user.firstname} #{user.lastname} <br />
                                 Email: #{user.email} <br />
@@ -41,7 +64,7 @@ class LoansController < ApplicationController
                                 Mobile: #{user.mobile}<br/><br />
                                 Please contact this user as soon as possible to arrange the loan details. <br /> <br />
                                 Your Artefacts Loan Service', 
-                :body =>        'You have a new loan request for artefact #{artefact.artefactid} (#{from} - #{to})!
+                :body =>        'You have a new loan request for artefact #{artefact.artefactid} (#{start_date} - #{end_date})!
                 
                                                 User: #{user.userid}
                                                 Name: #{user.firstname} #{user.lastname}

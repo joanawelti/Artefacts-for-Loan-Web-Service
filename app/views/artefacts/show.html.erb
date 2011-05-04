@@ -11,8 +11,9 @@
 	<tr>
 		<td>Owner: <%= @artefact.user.userid %></td>
 		<td colspan="2">
-			<span class="action_links">
-				<%= link_to 'Reviews', reviews_artefact_path(@artefact) %>
+			<span class="bold_action_links">
+				<%= link_to 'Reviews', reviews_artefact_path(@artefact) %> |
+			  <%= link_to 'Loan history', loans_artefact_path(@artefact) %>
 			</span>
 		</td>
 	</tr>
@@ -20,15 +21,18 @@
 
 <% user = @artefact.user rescue User.find(@artefact.user_id) %>
 
-<% if !current_user?(user) %>
-<h3>New loan</h3>
-<%= render :partial => "shared/loan", :object => @artefact %>
-<% end %>
-
-<%= link_to 'Edit', edit_artefact_path(@artefact) %> |
-
-<% if current_user?(user) %>
-<%= link_to 'Back', myartefacts_user_path(user) %>
+<% if current_user?(user) or current_user.admin? %>
+	<h3>Current Loan</h3>
+	<%= render :partial => "shared/currentloan", :object => @artefact %>
+	
+	<div>
+		<%= link_to 'Edit', edit_artefact_path(@artefact) %> |
+		<%= link_to 'Back', myartefacts_user_path(user) %>
+	</div>
 <% else %>
-<%= link_to 'Back', artefacts_path %>
+	<h3>New loan</h3>
+	<%= render :partial => "shared/loan", :object => @artefact %>
+	<div>
+		<%= link_to 'Back', artefacts_path %>
+	</div>
 <% end %>

@@ -253,12 +253,16 @@ table.enum {
 /**
 *	Links to actions
 */
-.action_links {
+.action_links, .bold_action_links {
 	float: right;
 }
 
-.action_links a {
+.action_links a, .bold_action_links {
 	margin-left: 0.8em;
+}
+
+.bold_action_links a {
+	font-weight: bold;
 }
 
 /**
@@ -271,6 +275,10 @@ table.enum {
 	height: 100px;
 	width: 80%;
 	margin-top: 0;
+}
+
+.reviews {
+	font-weight: bold;
 }
 
 /**
@@ -300,4 +308,15 @@ table.enum {
 .locator input {
 	margin-left: 0.5em;
 	margin-right:2em;
+}
+
+/**
+*		Loans
+*/
+#loan_message {
+	margin: 1em 0;
+}
+
+table.loaner_info {
+	width: 70%;
 }

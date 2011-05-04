@@ -1,0 +1,11 @@
+<tr>
+	<td>
+			Loaner: <%= loan.user.userid %>
+	</td>
+	<td>
+		From: <%= loan.loan_start.strftime("%a, %d %b %Y") %>
+	</td>
+	<td>
+		To: <%= loan.loan_end.strftime("%a, %d %b %Y") %>
+	</td>
+</tr>

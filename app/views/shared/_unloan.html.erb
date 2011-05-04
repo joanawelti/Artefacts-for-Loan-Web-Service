@@ -1,0 +1,8 @@
+<% if @artefact.is_on_loan? %>
+	<%= form_for @artefact.reverse_loans.find_by_artefact_id(@artefact),
+	             :html => { :method => :delete } do |f| %>
+	  <div class="actions"><%= f.submit "End loan" %></div>
+	<% end %>
+<% else %>
+	<div id="loan_message">Currently not loaned</div>
+<% end %>

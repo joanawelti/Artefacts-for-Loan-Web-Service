@@ -9,10 +9,10 @@ class ArtefactsController < ApplicationController
   def index
     @title = "Artefacts"
     if current_user.admin?
-      @artefacts = Artefact.all
+      @artefacts = Artefact.all.paginate(:page => params[:page])
     else 
       # only display artefacts that are visible
-      @artefacts = Artefact.where(['visible=? and not user_id=?', true, current_user.id])
+      @artefacts = Artefact.where(['visible=? and not user_id=?', true, current_user.id]).paginate(:page => params[:page])
     end
 
     respond_to do |format|
@@ -92,9 +92,12 @@ class ArtefactsController < ApplicationController
     @comment = Comment.new
   end
   
-  def loan
+  def loans
+    @title = "Loan History"
     @artefact = Artefact.find(params[:id])
+    @loans = @artefact.reverse_loans.paginate(:page => params[:page])
   end
+
 
   private
     def authorized_user

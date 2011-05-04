@@ -55,19 +55,20 @@ class User < ActiveRecord::Base
   validates :mobile,    :presence     => true,
                         :format => { :with => phone_regex, :message => "Mobile number contains non-digits"}
                   
-  validates_numericality_of :lat,   :greater_than_or_equal_to => -90.0, 
-                                    :less_than_or_equal_to => 90.0, 
-                                    :allow_nil => true, 
-                                    :message => "Value for lattitude must be in [-90, 90]"
-  validates_numericality_of :long,  :greater_than_or_equal_to => -180.0, 
-                                    :less_than_or_equal_to => 180.0, 
-                                    :allow_nil => true, 
-                                    :message => "Value for longitude must be in [-180, 190]"
+  validates_numericality_of :lat,  :greater_than_or_equal_to => -90.0, 
+                                        :less_than_or_equal_to => 90.0, 
+                                        :allow_nil => true, 
+                                        :message => "Value for lattitude must be in [-90, 90]"
+  validates_numericality_of :long, :greater_than_or_equal_to => -180.0, 
+                                        :less_than_or_equal_to => 180.0, 
+                                        :allow_nil => true, 
+                                        :message => "Value for longitude must be in [-180, 190]"
                         
               
   ## hooks                      
   before_save :encrypt_password
-  before_save :make_userid
+  before_create :make_userid
+
   
   def self.authenticate(email, submitted_password) 
     user = find_by_email(email)
@@ -91,20 +92,16 @@ class User < ActiveRecord::Base
   
   # is user currently loaning 'artefact'? 
   def loaned?(artefact)
-    !loans.where(['artefact_id = ? AND loan_start <= ? AND loan_end >= ?', artefact.id, Date.current, Date.current]).blank?
+    #!loans.where(['artefact_id = ? AND loan_start <= ? AND loan_end >= ?', artefact.id, Date.current, Date.current]).blank?
+    !loans.where(['artefact_id = ? AND active = ?', artefact.id, true]).blank?
   end
 
   def loan!(artefact, loan_start, loan_end)
-    loans.create!({ :artefact_id => artefact.id, :loan_start => loan_start, :loan_end => loan_end })
-  end
-  
-  def unloan!(artefact)
-    if loaned?(artefact)  
-      loans.where(['artefact_id = ?', artefact.id]).first.update_attributes(:loan_end => Date.yesterday)
-      #loans.where(['artefact_id = ?', artefact.id]).first.destroy
+    unless artefacts.include?(artefact) or artefact.is_on_loan?
+      loans.create!({ :artefact_id => artefact.id, :loan_start => loan_start, :loan_end => loan_end })
     end
   end
-   
+
   
   private
     # password

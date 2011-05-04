@@ -310,19 +310,33 @@ describe User do
         @user.loans.first.artefact_id.should == artefact2.id
         @user.loans.second.artefact_id.should == @artefact.id
       end
+      
+      it "should not be possible for the owner to loan his/her own artefacts" do
+        artefact2 = Factory(:artefact, :user => @user, :name => "BBB")
+        @user.loan!(artefact2, @loan_start, @loan_end)
+        @user.loaned?(artefact2).should be_false
+      end
+      
+      it "should only allow one loaner at a time" do
+        other_user = Factory(:user, :email => Factory.next(:email))
+        @user.loan!(@artefact, @loan_start, @loan_end)
+        other_user.loan!(@artefact, @loan_start, @loan_end)
+        other_user.loaned?(@artefact).should be_false
+      end
+      
     end
     
     describe "the unloaning process" do
-      it "should have an unloan! method" do
-        @user.should respond_to(:unloan!)
-      end
-
-      it "should unloan an artefact" do
+      before(:each) do
         @user.loan!(@artefact, @loan_start, @loan_end)
-        @user.unloan!(@artefact)
-        @user.should_not be_loaned(@artefact)
+        @artefact.unloan!
+      end
+      
+      it "should unloan an artefact" do
+        @user.loaned?(@artefact).should be_false
       end
     end
+  
   
   end
   

@@ -1,10 +1,9 @@
-<% if is_on_loan(@artefact) %>
-<div>Not available at the moment. Loaned until <it><%= loan_end_date(@artefact) %></it></div>
-	
+<% if @artefact.is_on_loan? %>
+	<div id="loan_message">Not available at the moment. Loaned until <it><%= loan_end_date(@artefact).strftime("%a, %d %b %Y") %></it></div>	
 <% else %>
 	<% loan_start = get_loan_start_date %>
 	<% loan_end = get_loan_end_date(loan_start) %>
-	<div>Available for loan from <%= loan_start.strftime("%a, %d %b %Y")%> to <%= loan_end.strftime("%a, %d %b %Y")%></div>
+	<div id="loan_message">Available for loan from <b><%= loan_start.strftime("%a, %d %b %Y")%> to <%= loan_end.strftime("%a, %d %b %Y")%></b></div>
 	<%= form_for current_user.loans.
 	                          build(:artefact_id => @artefact.id, :loan_start => loan_start, :loan_end => loan_end) do |f| %>
 	  <div><%= f.hidden_field :artefact_id %></div>
@@ -13,4 +12,5 @@
 
 	  <div class="actions"><%= f.submit "Loan" %></div>
 	<% end %>
+	
 <% end %>

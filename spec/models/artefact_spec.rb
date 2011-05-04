@@ -50,7 +50,7 @@ describe Artefact do
   
   end
 
-  describe "loans" do
+  describe "loaned artefacts" do
     before(:each) do
       @owner = Factory(:user, :email => Factory.next(:email))
       @artefact = @owner.artefacts.create(@attr)
@@ -66,14 +66,59 @@ describe Artefact do
       @artefact.should respond_to(:loaners)
     end
     
-    it "should have a loaned? method" do
-      @artefact.should respond_to(:loaner?)
+    it "should have a current_loan method" do
+      @artefact.should respond_to(:current_loan)
     end    
+    
+    it "should have an unloan! method" do
+      @artefact.should respond_to(:unloan!)
+    end
   
 
     it "should include the user in the loaned array" do
+      @user.loan!(@artefact, @loan_start, @loan_end)
+      @artefact.loaners.should include(@user)
+    end
+    
+    it "should have a is_on_loan method" do
+      @artefact.should respond_to(:is_on_loan?)
+    end
+    
+    it "should change the availability of the artefact" do
+      @user.loan!(@artefact, @loan_start, @loan_end)
+      @artefact.is_on_loan?.should be_true
+    end
+    
+    describe "the current loan" do
+      
+      it "should be accessible via the artefact if the artefact is on loan" do
+         @user.loan!(@artefact, @loan_start, @loan_end)
+         @artefact.current_loan.should == @user.loans.find_by_artefact_id(@artefact.id)
+      end
+      
+      it "should be nil if the artefact is not on loan" do
+         @artefact.current_loan.should be_nil
+      end
+      
+      it "should have the correct current loaner" do
         @user.loan!(@artefact, @loan_start, @loan_end)
-        @artefact.loaners.should include(@user)
+        @artefact.current_loan.user.should == @user
+      end
+      
+    end
+    
+    
+  
+    
+    describe "the unloaning process" do
+      before(:each) do
+        @user.loan!(@artefact, @loan_start, @loan_end)
+        @artefact.unloan!
+      end
+      
+      it "should change the availability of the artefact" do
+        @artefact.is_on_loan?.should be_false
+      end
     end
   
   end

@@ -1,4 +1,4 @@
-<h1>Artefact Loan and History</h1>
+<h1>Artefact Loan History</h1>
 <p id="notice"><%= notice %></p>
 
 <table>
@@ -13,5 +13,7 @@
 	<%= render :partial => "artefact_item_long", :object => @artefact %>
 </table>
 
-<h3>New loan</h3>
-<%= render :partial => "shared/loan", :object => @artefact %>
+<table class="loaner_info enum">
+	<%= render @loans %>
+</table>
+<%= will_paginate @loans %>

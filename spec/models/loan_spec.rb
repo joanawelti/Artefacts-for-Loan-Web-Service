@@ -38,6 +38,17 @@ describe Loan do
       @loan.artefact.should == @artefact
     end
     
+    it "should make the loan active" do
+      @loan.active.should be_true
+    end
+    
+  end
+  
+  describe "general loan properties" do
+    it "should only have one active loan per artefact" do
+      @user.loan!(@artefact, @loan_start, @loan_end)
+      Loan.where(['artefact_id = ? AND active = ?', @artefact.id, true]).count.should == 1
+    end
   end
   
   describe "validations" do

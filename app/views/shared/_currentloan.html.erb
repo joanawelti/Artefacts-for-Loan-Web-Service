@@ -1,0 +1,25 @@
+<% loan = @artefact.current_loan %>
+<% if loan.nil? %>
+	<div id="loan_message">Currently not loaned</div>
+<% else %>
+	<table class="loaner_info">
+		<tr>
+			<td>
+					Loaner: <%= loan.user.userid %>
+			</td>
+			<td>
+				From: <%= loan.loan_start.strftime("%a, %d %b %Y") %>
+			</td>
+			<td>
+				To: <%= loan.loan_end.strftime("%a, %d %b %Y") %>
+			</td>
+			<td>
+				<%= form_for @artefact.reverse_loans.find_by_artefact_id(@artefact),
+					           :html => { :method => :delete } do |f| %>
+										<div class="actions"><%= f.submit "End loan" %></div>
+				<% end %>
+			</td>
+		</tr>
+	</table>
+			
+<% end %>

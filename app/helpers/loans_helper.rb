@@ -7,12 +7,8 @@ module LoansHelper
     start_date + 1.month
   end
   
-  def is_on_loan(artefact)
-    !Loan.where(['artefact_id = ? AND loan_start <= ? AND loan_end >= ?', artefact.id, Date.current, Date.current]).blank?
-  end
-  
   def loan_end_date(artefact)
-    Loan.where(['artefact_id = ? AND loan_start <= ? AND loan_end >= ?', artefact.id, Date.current, Date.current]).first.loan_end
+    Loan.where(['artefact_id = ? AND active = ?', artefact.id, true]).first.loan_end
   end
 
 end

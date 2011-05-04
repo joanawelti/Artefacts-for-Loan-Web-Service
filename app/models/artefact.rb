@@ -47,10 +47,19 @@ class Artefact < ActiveRecord::Base
   }
   
   ## hooks
-  before_save :make_artefactid
+  before_create :make_artefactid
   
-  def loaner?(user)
-    loans.find_by_loaner_id(user)
+  def current_loan
+    current = reverse_loans.where(['active = ?', true])
+    current.first unless current.blank?
+  end
+  
+  def is_on_loan?
+    !current_loan.nil?
+  end
+  
+  def unloan!
+    reverse_loans.where(['artefact_id = ? AND active = ?', self.id, true]).first.update_attributes({ :loan_end => Date.current, :active => false  })
   end
   
   private

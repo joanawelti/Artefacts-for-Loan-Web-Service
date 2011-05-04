@@ -5,7 +5,7 @@ ArtefactsService::Application.routes.draw do
   resources :artefacts
   resources :artefacts do
     member do
-      get :reviews, :loan
+      get :reviews, :loans
     end
   end
   
