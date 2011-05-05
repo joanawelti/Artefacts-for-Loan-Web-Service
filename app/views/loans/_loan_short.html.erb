@@ -1,0 +1,16 @@
+<tr>
+	<td>
+		<% if loan_short.active %>
+			<b>*</b>
+		<% end %>
+	</td>
+	<td>
+			Loaner: <%= loan_short.user.userid %>
+	</td>
+	<td>
+		From: <%= loan_short.loan_start.strftime("%a, %d %b %Y") %>
+	</td>
+	<td>
+		To: <%= loan_short.loan_end.strftime("%a, %d %b %Y") %>
+	</td>
+</tr>

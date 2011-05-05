@@ -285,6 +285,10 @@ table.enum {
 *		Artefacts
 */
 
+td.artefact, td.location {
+	vertical-align: top;
+	padding-top: 10px;
+}
 .artefact_item_short {
 	margin-bottom: 2em;
 }
@@ -319,4 +323,18 @@ table.enum {
 
 table.loaner_info {
 	width: 70%;
+}
+
+.loan_info {
+	margin-right: 2em;
+}
+
+/**
+*		Map
+*/
+
+#map_canvas {
+	width: 200px;
+	height: 200px;
+	float: right;
 }

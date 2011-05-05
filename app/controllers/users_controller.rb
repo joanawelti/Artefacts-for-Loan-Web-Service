@@ -21,9 +21,6 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new(params[:user])
-    puts "s"
-    puts Gmaps4rails.geocode(@user.address)
-    puts "t"
     if @user.save
       # Handle a successful save.
       log_in @user
@@ -64,7 +61,7 @@ class UsersController < ApplicationController
   def myloans
     @title = "My loans"
     @user = User.find(params[:id])
-    @artefacts = @user.loaned_items.paginate(:page => params[:page])
+    @loans = @user.loans.where(['active = ?', true]).paginate(:page => params[:page])
   end
   
 end

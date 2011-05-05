@@ -2,6 +2,12 @@ class LoansController < ApplicationController
 
   before_filter :authenticate
   before_filter :authorized_user, :only => :destroy  
+  before_filter :authenticate_admin, :only => :index
+  
+  def index
+    @title = "Active Loans"
+    @loans = Loan.where(['active = ?', true]).paginate(:page => params[:page])
+  end
 
   def create
     @artefact = Artefact.find(params[:loan][:artefact_id])

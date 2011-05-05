@@ -25,8 +25,6 @@ class ArtefactsController < ApplicationController
   # GET /artefacts/1.xml
   def show
     @artefact = Artefact.find(params[:id])
-    @json = @artefact.user.to_gmaps4rails
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @artefact }
@@ -70,7 +68,7 @@ class ArtefactsController < ApplicationController
 
     respond_to do |format|
       if @artefact.update_attributes(params[:artefact])
-        format.html { redirect_to(edit_artefact_path(@artefact), :notice => 'Artefact was successfully updated.') }
+        format.html { redirect_to(artefact_path(@artefact), :notice => 'Artefact was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -69,10 +69,6 @@ class User < ActiveRecord::Base
   before_save :encrypt_password
   before_create :make_userid
   
-  # GMaps
-  acts_as_gmappable :lat => "lat", :long => "long", :process_geocoding => false
-
-  
   def self.authenticate(email, submitted_password) 
     user = find_by_email(email)
     return nil if user.nil? or !user.has_password?(submitted_password)
@@ -103,10 +99,6 @@ class User < ActiveRecord::Base
     unless artefacts.include?(artefact) or artefact.is_on_loan?
       loans.create!({ :artefact_id => artefact.id, :loan_start => loan_start, :loan_end => loan_end })
     end
-  end
-  
-  def gmaps4rails_address
-    "#{self.address}, #{self.city}, #{self.country}"
   end
 
   

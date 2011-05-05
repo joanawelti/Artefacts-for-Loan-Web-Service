@@ -11,8 +11,8 @@ Factory.define :user do |user|
   user.mobile                 "07756734344"
   user.password               "examplepassword"
   user.password_confirmation  "examplepassword"
-  user.lat                    0.166131
-  user.long                   0.617294
+  user.lat                    38.89859
+  user.long                   -77.035971
 end
 
 Factory.sequence :email do |n|

@@ -1,3 +1,6 @@
+<!-- Gmaps -->
+<%= render :partial => "shared/location_item", :object => @artefact %>
+
 <h1>Artefact Loan History</h1>
 <p id="notice"><%= notice %></p>
 
@@ -13,7 +16,8 @@
 	<%= render :partial => "artefact_item_long", :object => @artefact %>
 </table>
 
+<h3>History</h3>
 <table class="loaner_info enum">
-	<%= render @loans %>
+	<%= render :partial => "loans/loan_short", :collection => @loans %>
 </table>
 <%= will_paginate @loans %>

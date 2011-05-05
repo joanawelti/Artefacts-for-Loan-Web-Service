@@ -1,14 +1,14 @@
 <tr>
 	<td>
 		<%= image_tag artefact_item_long.photo.url(:small), :class => "artefact_image" %>
+		<div>Owner: <%= @artefact.user.userid %></div>
 	</td>
 	 <td class="artefact">
 	   	<h4 class="name"><%= artefact_item_long.name %></h4>
 	   	<span class="description"><%= artefact_item_long.description %></span>
 	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<div id="map_canvas" class="map"></div>
+	<td class="location">
+		<h4>Location</h4>
+		<div id="map_canvas" class="map">No location available</div>
 	</td>
 </tr>

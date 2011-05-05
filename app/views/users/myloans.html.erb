@@ -1,6 +1,8 @@
-<% unless @artefacts.empty? %>
-        <table class="artefacts" summary="User artefacts">
-          <%= render :partial => "artefacts/artefact", :collection => @artefacts %>
+<h1>My Loans</h1>
+<p id="notice"><%= notice %></p>
+<% unless @loans.empty? %>
+        <table class="loans enum" summary="User loans">
+          <%= render :partial => "loans/loan", :collection => @loans %>
         </table>
-        <%= will_paginate @artefacts %>
+        <%= will_paginate @loans %>
 <% end %>

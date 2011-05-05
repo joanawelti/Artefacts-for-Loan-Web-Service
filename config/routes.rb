@@ -17,7 +17,7 @@ ArtefactsService::Application.routes.draw do
   end
   
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :loans, :only => [:create, :destroy]
+  resources :loans, :only => [:create, :destroy, :index]
   resources :comments, :except => [:index, :new]
   resources :forgotten_passwords, :only => [:new, :create]
   

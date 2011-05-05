@@ -65,8 +65,23 @@ describe "LayoutLinks" do
           response.should have_selector("a", :href => myloans_user_path(@user),
                                               :content => "My loans" )
       end
-      
 
+    end
+    
+    describe "as an admin" do
+      before(:each) do
+        @user = Factory(:user, :administrator => true)
+        visit login_path
+        fill_in :email,    :with => @user.email
+        fill_in :password, :with => @user.password
+        click_button
+      end
+
+      it "should have a link to all loans" do
+        visit root_path
+        response.should have_selector("a", :href => loans_path,
+                                            :content => "All loans" )
+      end
     end
   
   

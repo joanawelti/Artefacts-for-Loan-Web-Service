@@ -1,11 +1,6 @@
-document.observe('dom:loaded', function() {
-		initialize();
-});
+function initialize(lat, lon) {
+	var latlng = new google.maps.LatLng(lat, lon);
 
-function initialize() {
-	var latlng = new google.maps.LatLng(47.394631, 8.53363
-		//<%= @artefact.get_current_location[:lat] %>, <%= @artefact.get_current_location[:long] %>
-		);
 	var mapOptions = {
 	     zoom: 8,
 	     center: latlng,
@@ -16,8 +11,6 @@ function initialize() {
 
 	var marker = new google.maps.Marker({
 	  position: latlng,
-	  map: map,
-	  icon: image,
 	});
 
 	marker.setMap(map);

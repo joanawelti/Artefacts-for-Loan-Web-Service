@@ -5,7 +5,9 @@
     <%= csrf_meta_tag %>
 	<%= render 'layouts/stylesheets' %>
 	<%= javascript_include_tag :defaults %>
-	<%= yield :head %>
+	<%= @extra_head_content %>
+	<%= #yield :head 
+	%>
   </head>
   <body>
     <div class="container">

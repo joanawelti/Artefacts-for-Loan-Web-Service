@@ -1,3 +1,6 @@
+<!-- Gmaps -->
+<%= render :partial => "shared/location_item", :object => @artefact %>
+
 <h1>Artefact Details</h1>
 <p id="notice"><%= notice %></p>
 
@@ -8,21 +11,15 @@
 		</td>
 	</tr>
 	<%= render :partial => "artefact_item_long", :object => @artefact %>
-	<tr>
-		<td>Owner: <%= @artefact.user.userid %></td>
-		<td colspan="2">
-			<span class="bold_action_links">
-				<%= link_to 'Reviews', reviews_artefact_path(@artefact) %> |
-			  <%= link_to 'Loan history', loans_artefact_path(@artefact) %>
-			</span>
-		</td>
-	</tr>
 </table>
 
-<div id="map_canvas"><%= gmaps4rails(@json) %></div>
+<span class="bold_action_links">
+	<%= link_to 'Reviews', reviews_artefact_path(@artefact) %> |
+	<%= link_to 'Loan history', loans_artefact_path(@artefact) %>
+</span>
+
 
 <% user = @artefact.user rescue User.find(@artefact.user_id) %>
-
 <% if current_user?(user) or current_user.admin? %>
 	<h3>Current Loan</h3>
 	<%= render :partial => "shared/currentloan", :object => @artefact %>

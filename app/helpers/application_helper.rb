@@ -10,7 +10,7 @@ module ApplicationHelper
     end
     
     def logo
-        image_tag("", :alt => "Artefacts for Loan Web Service", :class => "round")
+        image_tag("title.png", :alt => "Artefacts for Loan Web Service", :class => "round")
     end
   
   

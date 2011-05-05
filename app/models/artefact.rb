@@ -59,7 +59,7 @@ class Artefact < ActiveRecord::Base
   end
   
   def unloan!
-    reverse_loans.where(['artefact_id = ? AND active = ?', self.id, true]).first.update_attributes({ :loan_end => Date.current, :active => false  })
+    reverse_loans.where(['active = ?', true]).first.update_attributes({ :loan_end => Date.current, :active => false  })
   end
   
   def get_current_location

@@ -127,7 +127,9 @@ describe UsersController do
                     :country => "", 
                     :mobile => "",
                     :password => "", 
-                    :password_confirmation => "" }
+                    :password_confirmation => "",
+                    :lat => "",
+                    :long => "" }
         end
 
         it "should not create a user" do
@@ -159,7 +161,9 @@ describe UsersController do
                       :country => "UK", 
                       :mobile => "07757427217",
                       :password => "passwordForExample", 
-                      :password_confirmation => "passwordForExample" }
+                      :password_confirmation => "passwordForExample",
+                      :lat => 38.89859,
+                      :long => -77.035971 }
           end
 
           it "should create a new user" do
@@ -205,7 +209,9 @@ describe UsersController do
                     :country => "", 
                     :mobile => "",
                     :password => "", 
-                    :password_confirmation => "" }
+                    :password_confirmation => "",
+                    :lat => "",
+                    :long => "" }
         end
 
         it "should render the 'edit' page" do
@@ -229,7 +235,9 @@ describe UsersController do
                     :country => "UK", 
                     :mobile => "07757427217",
                     :password => "passwordForExample", 
-                    :password_confirmation => "passwordForExample" }
+                    :password_confirmation => "passwordForExample",
+                    :lat => 38.89859,
+                    :long => -77.035971 }
         end
         
 
@@ -378,7 +386,7 @@ describe UsersController do
     
     describe "loan pages" do
 
-        describe "when not logged in" do
+        context "when not logged in" do
 
           it "should protect 'myloans'" do
             get :myloans, :id => 1
@@ -386,7 +394,7 @@ describe UsersController do
           end
         end
 
-        describe "when logged in" do
+        context "when logged in" do
 
           before(:each) do 
             @user = Factory(:user)
@@ -402,12 +410,12 @@ describe UsersController do
 
           it "should show loaned artefacts" do
             get :myloans, :id => @user
-            response.should have_selector("a", :href => artefact_path(@artefact1))
+            response.should have_selector("h3", :content => @artefact1.artefactid)
           end
 
-          pending "should show user followers" do
-            get :myloanedartefacts, :id => @user
-            response.should have_selector("a", :href => artefact_path(@artefact2))
+          it "should show only the user's loans" do
+            get :myloans, :id => @user
+            response.should_not have_selector("h3", :content => @artefact2.artefactid)
           end
         end
       end
