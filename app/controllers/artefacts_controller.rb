@@ -96,6 +96,21 @@ class ArtefactsController < ApplicationController
     @artefact = Artefact.find(params[:id])
     @loans = @artefact.reverse_loans.paginate(:page => params[:page])
   end
+  
+  def search
+    if params[:search_string].blank?
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.js
+      end
+    else
+      @artefacts = Artefact.search(params[:search_string]).paginate(:page => params[:page])
+      respond_to do |format|
+        format.html { render 'pages/home', :artefacts => @artefacts }
+        format.js
+      end
+    end
+  end
 
 
   private

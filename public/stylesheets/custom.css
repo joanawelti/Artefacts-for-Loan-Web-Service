@@ -329,6 +329,11 @@ table.loaner_info {
 	margin-right: 2em;
 }
 
+ul#all_loans {
+	margin: 0;
+	padding: 0;
+}
+
 /**
 *		Map
 */
@@ -336,5 +341,12 @@ table.loaner_info {
 #map_canvas {
 	width: 200px;
 	height: 200px;
+	float: right;
+}
+
+/**
+*		Ajax forms
+*/
+#search, #reorder {
 	float: right;
 }

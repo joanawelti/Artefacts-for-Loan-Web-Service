@@ -1,22 +1,12 @@
-<tr>
-	<table class="enum">
-		<tr>
-			<td>
-				<h3><%= artefact.artefactid %></h3>
+<% unless artefact.blank? %>
+<table class="enum">
+  	<tr>
+    	<td><h3><%= artefact.artefactid %></h3></td>
+		<td>
+			Owner: <%= artefact.user.userid %>
+			<span class="action_links"><%= link_to "Details", artefact_path(artefact) %></span>
 			</td>
-			<td>
-				<span  class="action_links">
-					<%= link_to "show", artefact_path(artefact) %>
-					<%= link_to "edit", edit_artefact_path(artefact) %>
-					<% user = artefact.user rescue User.find(artefact.user_id) %>
-					<% if current_user?(user) %>
-						<%= link_to "delete", artefact, :method => :delete,
-			                                     		:confirm => "You sure?",
-			                                     		:title => artefact.name %>
-					<% end %>
-				</span>
-			</td>
-		</tr>
-		<%= render :partial => "artefacts/artefact_item_short", :object => artefact %>
-	</table>	
-</tr>
+	</tr>
+	<%= render :partial => "artefacts/artefact_item_short", :object => artefact %>
+</table>
+<% end %>

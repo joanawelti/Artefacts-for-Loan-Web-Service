@@ -6,7 +6,7 @@ class LoansController < ApplicationController
   
   def index
     @title = "Active Loans"
-    @loans = Loan.where(['active = ?', true]).paginate(:page => params[:page])
+    @loans = Loan.find_all_by_active(true).paginate(:page => params[:page])
   end
 
   def create
@@ -36,6 +36,29 @@ class LoansController < ApplicationController
     end
     redirect_to root_path
   end
+  
+  def reorder
+    @order = params[:order]
+    if @order.blank? or @order.to_i.abs > 2
+      respond_to do |format|
+        format.html { redirect_to :index }
+        format.js
+      end
+    else
+      if @order.to_i == 2
+        puts "ASC"
+        @loans = Loan.find_all_by_active(true).sort!{|a,b| a.created_at <=> b.created_at}.paginate(:page => params[:page])
+        puts @loans.first.id
+      else
+        @loans = Loan.find_all_by_active(true).paginate(:page => params[:page])
+      end
+      respond_to do |format|
+        format.html { render :index, :loans => @loans  }
+        format.js
+      end
+    end
+  end
+  
   
   private
     def authorized_user

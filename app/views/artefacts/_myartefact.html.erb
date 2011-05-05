@@ -1,0 +1,22 @@
+<tr>
+	<table class="enum">
+		<tr>
+			<td>
+				<h3><%= myartefact.artefactid %></h3>
+			</td>
+			<td>
+				<span  class="action_links">
+					<%= link_to "show", artefact_path(myartefact) %>
+					<%= link_to "edit", edit_artefact_path(myartefact) %>
+					<% user = myartefact.user rescue User.find(myartefact.user_id) %>
+					<% if current_user?(user) %>
+						<%= link_to "delete", myartefact, :method => :delete,
+			                                     		:confirm => "You sure?",
+			                                     		:title => myartefact.name %>
+					<% end %>
+				</span>
+			</td>
+		</tr>
+		<%= render :partial => "artefacts/artefact_item_short", :object => myartefact %>
+	</table>	
+</tr>

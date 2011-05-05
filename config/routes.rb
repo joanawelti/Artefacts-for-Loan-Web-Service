@@ -27,6 +27,8 @@ ArtefactsService::Application.routes.draw do
   match '/contact',   :to => 'pages#contact'
   match '/about',     :to => 'pages#about'  
   match '/home',      :to => 'pages#home'  
+  match '/search',    :to => 'artefacts#search'
+  match '/reorder',   :to => 'loans#reorder'
   #match 'users/:id/myartefacts', :to => 'users#myartefacts'
 
   # The priority is based upon order of creation:

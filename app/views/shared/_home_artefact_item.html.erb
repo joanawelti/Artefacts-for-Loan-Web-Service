@@ -1,0 +1,12 @@
+<% unless home_artefact_item.blank? %>
+<table class="enum">
+  	<tr>
+    	<td><h3><%= home_artefact_item.artefactid %></h3></td>
+		<td>
+			Owner: <%= home_artefact_item.user.userid %>
+			<span class="action_links"><%= link_to "Details", artefact_path(home_artefact_item) %></span>
+			</td>
+	</tr>
+	<%= render :partial => "artefacts/artefact_item_short", :object => home_artefact_item %>
+</table>
+<% end %>

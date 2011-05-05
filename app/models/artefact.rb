@@ -49,6 +49,12 @@ class Artefact < ActiveRecord::Base
   ## hooks
   before_create :make_artefactid
   
+  
+  def self.search(search_string)
+    content = "%#{search_string}%"
+    Artefact.where(['visible = ? AND (name LIKE ? OR description LIKE ? OR artefactid LIKE ?)', true, content, content, content])
+  end
+  
   def current_loan
     current = reverse_loans.where(['active = ?', true])
     current.first unless current.blank?

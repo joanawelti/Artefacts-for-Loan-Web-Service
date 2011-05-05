@@ -1,0 +1,21 @@
+<table class="enum">
+	<tr>
+		<td>
+			<h3><%= loan_item.artefact.artefactid %></h3>
+		</td>
+		<td>
+			<span class="action_links"><%= link_to "show", artefact_path(loan_item.artefact) %></span>
+		</td>
+	</tr>
+	<%= render :partial => "artefacts/artefact_item_short", :object => loan_item.artefact %>
+	<tr>
+		<td>
+			<b>Loan:</b>
+		</td>
+		<td>
+			<span class="loan_info">From: <%= loan_item.loan_start.strftime("%a, %d %b %Y") %></span> 
+			<span class="loan_info">To: <%= loan_item.loan_end.strftime("%a, %d %b %Y") %></span>
+			<span class="action_links"><%= link_to "Borrower: #{loan_item.user.userid}", loan_item.user %></span>
+		</td>
+	</tr>
+</table>

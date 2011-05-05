@@ -13,6 +13,5 @@ module ApplicationHelper
         image_tag("title.png", :alt => "Artefacts for Loan Web Service", :class => "round")
     end
   
-  
 end
 

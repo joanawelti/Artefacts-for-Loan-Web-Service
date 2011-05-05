@@ -1,17 +1,12 @@
-<h1>Artefacts</h1>
+<h1>Artefacts
+<span id="search" class="round">
+  <%= render :partial => 'artefacts/search' %>
+</span></h1>
 
+<span id="artefact_items">
 <% unless @artefacts.nil? %>
-<% @artefacts.each do |artefact| %>
-<table class="enum">
-  	<tr>
-    	<td><h3><%= artefact.artefactid %></h3></td>
-		<td>
-			Owner: <%= artefact.user.userid %>
-			<span class="action_links"><%= link_to "Details", artefact_path(artefact) %></span>
-			</td>
-	</tr>
-	<%= render :partial => "artefacts/artefact_item_short", :object => artefact %>
-</table>
+<%= render @artefacts %>
 <% end %>
-<% end %>
+</span>
 <br />
+

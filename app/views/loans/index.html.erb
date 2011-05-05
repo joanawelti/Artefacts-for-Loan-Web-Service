@@ -1,5 +1,9 @@
-<h1>Active Loans</h1>
-<ul class="users">
-	<%= render @loans %>
+<h1>All Loans
+	<span id="reorder">
+	  <%= render :partial => 'reorder' %>
+	</span>	
+</h1>
+<ul id="all_loans">
+	<%= render @loans %>	
 </ul>
 <%= will_paginate %>
