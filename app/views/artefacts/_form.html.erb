@@ -21,10 +21,14 @@
 		<%= f.radio_button :visible, "false" %>
 	</div>
 	<div class="field visibility">
-		<span><b>Available</b></span><br />
+		<span><b>Available:</b> <%= @artefact.is_on_loan?%> </span><br />
 	</div>
 	<div class="field locator">
 		<span><b>Locator</b></span><br />
+		<%= f.label :lat, 'Lat' %>
+		<%= f.text_field :lat, :value => @artefact.get_current_location[:lat], :readonly => "true" %>
+		<%= f.label :long, 'Long' %>
+		<%= f.text_field :long, :value => @artefact.get_current_location[:long], :readonly => "true" %>
 	</div>
   <div class="actions">
     <%= f.submit "Update" %>

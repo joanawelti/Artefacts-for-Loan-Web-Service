@@ -5,6 +5,7 @@
 	<%= render 'shared/error_messages', :object => f.object %>
 	
 	<fieldset>
+		<legend>Personal Information</legend>
 		<ul class="personal_information user_data">
 			<li>
 				<div class="field">
@@ -48,6 +49,24 @@
 	</fieldset>
 	
 	<fieldset>
+		<legend>Google Maps</legend>
+		<ul class="user_data">
+			<li>
+				<div class="field">
+			    <div><%= f.label :lat, 'Latitude' %></div>
+			   	<%= f.text_field :lat %>
+			  </div>
+				<div class="field">
+			    <div><%= f.label :long, 'Longitude' %></div>
+			   	<%= f.text_field :long %>
+			  </div>
+			</li>
+				
+		</ul>
+	</fieldset>
+	
+	<fieldset>
+		<legend>Login Data</legend>
 		<ul class="registration_information user_data">
 			<li>
 		  		<div class="field medium_field">
@@ -57,13 +76,13 @@
 			</li>
 			<li>
 				<div class="field">
-			    	<div><%= f.label :password %></div>
-			    	<%= f.password_field :password %>
-			  	</div>
-			  	<div class="field">
-			    	<div><%= f.label :password_confirmation %></div>
-			    	<%= f.password_field :password_confirmation %>
-			  	</div>
+			   	<div><%= f.label :password %></div>
+			   	<%= f.password_field :password %>
+			  </div>
+			  <div class="field">
+			   	<div><%= f.label :password_confirmation %></div>
+			   	<%= f.password_field :password_confirmation %>
+			  </div>
 			</li>
 		</ul>
 	</fieldset>

@@ -21,6 +21,9 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new(params[:user])
+    puts "s"
+    puts Gmaps4rails.geocode(@user.address)
+    puts "t"
     if @user.save
       # Handle a successful save.
       log_in @user

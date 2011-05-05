@@ -25,6 +25,7 @@ class ArtefactsController < ApplicationController
   # GET /artefacts/1.xml
   def show
     @artefact = Artefact.find(params[:id])
+    @json = @artefact.user.to_gmaps4rails
 
     respond_to do |format|
       format.html # show.html.erb

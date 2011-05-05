@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110504094329) do
+ActiveRecord::Schema.define(:version => 20110504230854) do
 
   create_table "artefacts", :force => true do |t|
     t.string   "artefactid"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20110504094329) do
     t.string   "salt"
     t.float    "lat"
     t.float    "long"
+    t.boolean  "gmaps"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

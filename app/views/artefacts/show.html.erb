@@ -19,6 +19,8 @@
 	</tr>
 </table>
 
+<div id="map_canvas"><%= gmaps4rails(@json) %></div>
+
 <% user = @artefact.user rescue User.find(@artefact.user_id) %>
 
 <% if current_user?(user) or current_user.admin? %>

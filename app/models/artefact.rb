@@ -62,6 +62,17 @@ class Artefact < ActiveRecord::Base
     reverse_loans.where(['artefact_id = ? AND active = ?', self.id, true]).first.update_attributes({ :loan_end => Date.current, :active => false  })
   end
   
+  def get_current_location
+    if is_on_loan?
+      # get loaners location
+      @owner = self.current_loan.user
+    else
+      # owner's location
+      @owner = self.user
+    end
+    { :lat => @owner.lat, :long => @owner.long }
+  end
+  
   private
   
     # artefactid
