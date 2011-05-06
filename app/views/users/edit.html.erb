@@ -1,96 +1,12 @@
 <h1>User details</h1>
 
 <%= form_for(@user) do |f| %>
-
 	<%= render 'shared/error_messages', :object => f.object %>
-	
-	<fieldset>
-		<legend>Personal Information</legend>
-		<ul class="personal_information user_data">
-			<li>
-				<div class="field">
-				    <div><%= f.label :firstname %></div>
-				    <%= f.text_field :firstname %>
-			  </div>
-				<div class="field">
-				    <div><%= f.label :lastname %></div>
-				    <%= f.text_field :lastname %>
-			  </div>
-			</li>
-			<li>
-				<div class="field long_field">
-				    <div><%= f.label :address %></div>
-				    <%= f.text_field :address %>
-				 </div>
-			</li>
-			<li>
-				 <div class="field">
-				    <div><%= f.label :city %></div>
-				    <%= f.text_field :city %>
-				 </div>
-				 <div class="field short_field">
-				    <div><%= f.label :postcode %></div>
-				    <%= f.text_field :postcode %>
-				 </div>
-			</li>
-			<li>
-				<div class="field medium_field">
-				    <div><%= f.label :country %></div>
-				    <%= f.text_field :country %>
-				 </div>
-			</li>
-			<li>
-				<div class="field medium_field">
-			    	<div><%= f.label :mobile %></div>
-			    	<%= f.text_field :mobile %>
-			  	</div>
-			</li>
-		</ul>
-	</fieldset>
-	
-	<fieldset>
-		<legend>Google Maps</legend>
-		<ul class="user_data">
-			<li>
-				<div class="field">
-			    <div><%= f.label :lat, 'Latitude' %></div>
-			   	<%= f.text_field :lat %>
-			  </div>
-				<div class="field">
-			    <div><%= f.label :long, 'Longitude' %></div>
-			   	<%= f.text_field :long %>
-			  </div>
-			</li>
-				
-		</ul>
-	</fieldset>
-	
-	<fieldset>
-		<legend>Login Data</legend>
-		<ul class="registration_information user_data">
-			<li>
-		  		<div class="field medium_field">
-			    	<div><%= f.label :email %></div>
-			    	<%= f.text_field :email %>
-				</div>
-			</li>
-			<li>
-				<div class="field">
-			   	<div><%= f.label :password %></div>
-			   	<%= f.password_field :password %>
-			  </div>
-			  <div class="field">
-			   	<div><%= f.label :password_confirmation %></div>
-			   	<%= f.password_field :password_confirmation %>
-			  </div>
-			</li>
-		</ul>
-	</fieldset>
-	
-  	<div class="actions">
-    	<%= f.submit "Update", :class => "submit" %>
-  		<%= f.submit "Cancel", :type => "button", :onclick => "this.form.reset()", :class => "reset" %>
-	</div>
+  <%= render 'form', :f => f %>
+  <div class="actions">
+  	<%= f.submit "Update", :class => "submit" %>
+		<%= f.submit "Cancel", :type => "button", :onclick => "this.form.reset()", :class => "reset" %>
+</div>
 
 <% end %>
 <%= link_to 'Back', users_path %>

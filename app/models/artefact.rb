@@ -22,13 +22,22 @@ class Artefact < ActiveRecord::Base
   
   
   ## attributes
-  attr_accessible :name, :description, :photo, :visible
+  attr_accessible :name, :description, :photo, :visible, :lat, :long
   
   ## validations
   validates :name,  :presence => true,
                     :length   => { :maximum => 200 }
   
   validates :user_id, :presence => true
+  
+  validates_numericality_of :lat,  :greater_than_or_equal_to => -90.0, 
+                                        :less_than_or_equal_to => 90.0, 
+                                        :allow_nil => true, 
+                                        :message => "Value for lattitude must be in [-90, 90]"
+  validates_numericality_of :long, :greater_than_or_equal_to => -180.0, 
+                                        :less_than_or_equal_to => 180.0, 
+                                        :allow_nil => true, 
+                                        :message => "Value for longitude must be in [-180, 190]"
   
   default_scope :order => 'artefacts.name ASC'
   
@@ -60,23 +69,32 @@ class Artefact < ActiveRecord::Base
     current.first unless current.blank?
   end
   
+  def loaner?(user)
+    !loaners.find_by_id(user).blank?
+  end
+  
   def is_on_loan?
     !current_loan.nil?
   end
   
   def unloan!
-    reverse_loans.where(['active = ?', true]).first.update_attributes({ :loan_end => Date.current, :active => false  })
+    reverse_loans.find_by_active(true).update_attributes({ :loan_end => Date.current, :active => false  })
   end
   
   def get_current_location
     if is_on_loan?
       # get loaners location
-      @owner = self.current_loan.user
+      { :lat => self.current_loan.user.lat, :long => self.current_loan.user.long }
     else
+      # does artefact have it's own location?
+      if !(self.lat.nil? or self.long.nil?)
+        { :lat => self.lat, :long => self.long }
+      else
       # owner's location
-      @owner = self.user
+        { :lat => self.user.lat, :long => self.user.long }
+      end
     end
-    { :lat => @owner.lat, :long => @owner.long }
+    
   end
   
   private

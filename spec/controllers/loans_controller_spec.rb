@@ -153,5 +153,45 @@ describe LoansController do
     end
   end
   
+  describe "GET 'reorder'" do
+    
+    context "as a non-admin user" do
+      
+      before(:each) do
+        test_log_in(@user)
+      end
+      
+      it "should redirect the home page" do
+        get :index
+        response.should redirect_to(root_path)
+      end
+        
+    end
+    
+    context "as a logged in administrator" do
+      
+      before(:each) do
+        @a1 = Factory(:artefact, :user => @user, :name => "DDD")
+        @loan1 = Factory(:loan, :user => @user, :artefact => @artefact, :loan_start => @loan_start, :loan_end => @loan_end, :created_at => Time.now - 2)
+        @loan2 = Factory(:loan, :user => @user, :artefact => @a1, :loan_start => @loan_start, :loan_end => @loan_end, :created_at => Time.now - 1)
+        @admin = Factory(:user, :email => "admin@test.com", :administrator => true)
+        test_log_in(@admin)
+      end
+    
+      it "should display all the loans, regardless of ordering (DESC)" do
+        xhr :get, :reorder, :order => 1
+        response.should have_selector("h4", :content => @artefact.name)
+        response.should have_selector("h4", :content => @a1.name)
+      end
+      
+      it "should display all the loans, regardless of ordering  (ASC)" do
+        xhr :get, :reorder, :order => 2
+        response.should have_selector("h4", :content => @artefact.name)
+        response.should have_selector("h4", :content => @a1.name)
+      end  
+    
+    end
+   
+   end
   
 end

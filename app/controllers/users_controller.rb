@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       # Handle a successful save.
       log_in @user
       flash[:success] = "Registration was successful"
-      redirect_to @user
+      redirect_to root_path
     else
       @title = "Register"
       render 'new'

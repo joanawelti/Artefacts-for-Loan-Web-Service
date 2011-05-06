@@ -1,6 +1,8 @@
 <h1>My artefacts</h1>
 <div class="bold_action_links"><%= link_to "Add artefact", new_artefact_path %></div>
-<% unless @artefacts.empty? %>
+<% if @artefacts.empty? %>
+<span>You don't have any artefacts for loan yet. You can add one by clicking on 'Add artefact'</span>
+<% else %>
         <table class="artefacts" summary="User artefacts">
           <%= render :partial => "artefacts/myartefact", :collection => @artefacts %>
         </table>

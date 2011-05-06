@@ -1,7 +1,10 @@
 <li>
-	<%= link_to "#{user.firstname} #{user.lastname}", user %>
+	<%= user.firstname %> <%= user.lastname %>
 	<% if current_user.administrator? %>
-	  | <%= link_to "delete", user, :method => :delete, :confirm => "You sure?",
+	<span>
+		| <%= link_to "show", user_path(user) %>
+		| <%= link_to "delete", user, :method => :delete, :confirm => "You sure?",
 	                                :title => "Delete #{user.firstname} #{user.lastname}" %>
 	  <% end %>
+	</end>
 </li>

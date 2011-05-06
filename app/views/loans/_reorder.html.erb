@@ -1,4 +1,4 @@
-<% form_tag({ :controller => 'loans', :action => 'reorder' }, :id => 'reorder_form' , :method => 'get' , :remote => true ) do  %>
+<%=form_tag({ :controller => 'loans', :action => 'reorder' }, :id => 'reorder_form' , :method => 'get' , :remote => true ) do  %>
 	<%= select_tag(:order, options_for_select([['Descending', 1], ['Ascending', 2]])) %>
 	<%= submit_tag "Go", :name => nil %>
 <% end %>

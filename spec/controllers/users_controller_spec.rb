@@ -172,9 +172,9 @@ describe UsersController do
             end.should change(User, :count).by(1)
           end
 
-          pending "should redirect to the artifacts on loan page" do
+          it "should redirect to the artifacts on loan page" do
             post :create, :user => @attr
-            response.should redirect_to(user_path(assigns(:user)))
+            response.should redirect_to(root_path)
           end 
           
           it "should have a welcome message" do

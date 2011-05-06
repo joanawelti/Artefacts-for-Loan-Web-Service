@@ -61,17 +61,17 @@ fieldset {
 /* Links */
 
 a {
-  color: #463867;
+  color: #2a5584;
   text-decoration: none;
 }
 
 a:hover {
-  color: #201a30;
+  color: #1d3c5e;
   text-decoration: underline;
 }
 
 a:visited {
-  color: #201a30;
+  color: #2a5584;
 }
 
 
@@ -173,6 +173,7 @@ ul.user_data div.medium_field {
 
 ul.user_data div.field input {
 	width: 90%;
+	border: 1px solid #BBBBBB
 }
 
 ul.user_data div.long_field input {
@@ -349,4 +350,9 @@ ul#all_loans {
 */
 #search, #reorder {
 	float: right;
+}
+
+
+tbody tr:nth-child(2n) td, tbody tr.even td {
+    background: none repeat scroll 0 0 #DBE7F4;
 }

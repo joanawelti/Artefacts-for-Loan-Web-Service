@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110504230854) do
+ActiveRecord::Schema.define(:version => 20110506150448) do
 
   create_table "artefacts", :force => true do |t|
     t.string   "artefactid"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(:version => 20110504230854) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.boolean  "visible",            :default => true
+    t.float    "lat"
+    t.float    "long"
   end
 
   add_index "artefacts", ["user_id"], :name => "index_artefacts_on_user_id"

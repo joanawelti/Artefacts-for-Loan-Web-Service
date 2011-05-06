@@ -131,9 +131,9 @@ describe ArtefactsController do
           end.should_not change(Artefact, :count)
         end
 
-        pending "should render the home page" do
+        it "should render the new page" do
           post :create, :artefact => @attr
-          response.should render_template('pages/home')
+          response.should render_template('artefacts/new')
         end
       end
 
@@ -149,9 +149,9 @@ describe ArtefactsController do
           end.should change(Artefact, :count).by(1)
         end
 
-        pending "should redirect to the home page" do
+        it "should redirect to the home page" do
           post :create, :artefact => @attr
-          response.should redirect_to(root_path)
+          response.should redirect_to(myartefacts_user_path(@user))
         end
 
         it "should have a flash message" do
@@ -207,6 +207,25 @@ describe ArtefactsController do
           response.should have_selector("img", :class => "artefact_image")
       end
 
+    end
+    
+    describe "GET 'search'" do
+      
+      before(:each) do
+        @user = test_log_in(Factory(:user))
+        @artefact = Factory(:artefact, :user => @user, :name => "Artefact Test Name")
+        @artefact2 = Factory(:artefact, :user => @user, :name => "Artefact Bla Name")
+      end
+      
+      it "should display all artefacts that match the search term" do
+        xhr :get, :search, :search_string => "Test"
+        response.should have_selector("h4", :content => "Artefact Test Name")
+      end
+      
+      it "should not display any artefacts that don't match the seach term" do
+        xhr :get, :search, :search_string => "Test"
+        response.should_not have_selector("h4", :content => "Artefact Bla Name")
+      end
     end
   
     describe "GET 'reviews'" do

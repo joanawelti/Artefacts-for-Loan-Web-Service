@@ -2,7 +2,7 @@ class LoansController < ApplicationController
 
   before_filter :authenticate
   before_filter :authorized_user, :only => :destroy  
-  before_filter :authenticate_admin, :only => :index
+  before_filter :authenticate_admin, :only => [:index, :reorder]
   
   def index
     @title = "Active Loans"

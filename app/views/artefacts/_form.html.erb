@@ -1,7 +1,7 @@
 <%= form_for(@artefact, :html => { :multipart => true }) do |f| %>
   <%= render 'shared/error_messages', :object => f.object %>
   	<div class="field">
-    	<%= f.label :name %><br />
+    	<%= f.label :name %>*<br />
     	<%= f.text_field :name %>
   	</div>
   	<div class="field">
@@ -19,6 +19,12 @@
 		<%= f.radio_button :visible, "true", :checked => true %> 
 		<%= f.label :visible, 'Hide', :value => "false" %>
 		<%= f.radio_button :visible, "false" %>
+	</div>
+	<div class="field location">
+	    <%= f.label :lat, 'Latitude' %>
+	   	<%= f.number_field :lat %>
+	    <%= f.label :long, 'Longitude' %>
+	   	<%= f.number_field :long %>
 	</div>
   <div class="actions">
     <%= f.submit "Update" %>
