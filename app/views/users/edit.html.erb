@@ -1,4 +1,4 @@
-<h1>User details</h1>
+<h1>My details (<%= @user.userid %>)</h1>
 
 <%= form_for(@user) do |f| %>
 	<%= render 'shared/error_messages', :object => f.object %>

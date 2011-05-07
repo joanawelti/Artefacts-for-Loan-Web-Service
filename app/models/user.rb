@@ -1,29 +1,29 @@
-# == Schema Information
-# Schema version: 20110315160545
+# == User
 #
 # Table name: users
 #
-#  id            :integer         not null, primary key
-#  userid        :string(255)
-#  firstname     :string(255)
-#  lastname      :string(255)
-#  email         :string(255)
-#  administrator :boolean
-#  address       :string(255)
-#  city          :string(255)
-#  postcode      :string(255)
-#  country       :string(255)
-#  mobile        :string(255)
-#  created_at    :datetime
-#  updated_at    :datetime
+# User records should require:
+# * firstname     :string
+# * lastname      :string
+# * email         :string
+# * address       :string
+# * city          :string
+# * postcode      :string
+# * country       :string
+# * mobile        :string
+# * password      :string 
+#
+# Optional:
+# * lat/long        :float
 #
 
 class User < ActiveRecord::Base
   
   ## relationships
   has_many :artefacts, :dependent => :destroy
-  has_many :loans,  :foreign_key => "user_id"
-  has_many :loaned_items, :through => :loans, :source => :artefact #:artefact_id
+  has_many :loans,  :foreign_key => "user_id", 
+                    :dependent => :destroy
+  has_many :loaned_items, :through => :loans, :source => :artefact
   has_many :comments, :dependent => :destroy
   
   ## attributes
@@ -69,32 +69,60 @@ class User < ActiveRecord::Base
   before_save :encrypt_password
   before_create :make_userid
   
+  ## public methods
+  
+  ##
+  # Checks if there is a user with the given password and submitted password
+  # Returns the user or nil, if no such user
+  #
   def self.authenticate(email, submitted_password) 
     user = find_by_email(email)
     return nil if user.nil? or !user.has_password?(submitted_password)
     return user
   end
   
+  ##
+  # Checks if there is a user with the id and salt
+  # Returns the user or nil, if no such user
+  #
   def self.authenticate_with_salt(id, salt)
     user = find_by_id(id)
     (user && user.salt == salt) ? user : nil
   end
   
+  ##
+  # Returns true if the user is an administrator
+  #
   def admin?
     self.administrator
   end
   
-   # Return true if the user's password matches the submitted password.
+  ##
+  # Checks the submitted password
+  # Returns true if the user's password matches the submitted password.
+  #
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)
   end
   
-  # is user currently loaning 'artefact'? 
+  ##
+  # Returns true if the user currently is loaning 'artefact' 
+  #
   def loaned?(artefact)
-    #!loans.where(['artefact_id = ? AND loan_start <= ? AND loan_end >= ?', artefact.id, Date.current, Date.current]).blank?
-    !loans.where(['artefact_id = ? AND active = ?', artefact.id, true]).blank?
+    !loans.find_by_artefact_id_and_active(artefact.id, true).blank?
   end
 
+  ##
+  # Create a loan for the user if the artefact is not already on loan and
+  # if user is not the owner of the artefact
+  #
+  # => Artefacts can only be loaned once
+  # => Owners can't loan their own artefacts (use visible attribute instead to make artefact unavailable) 
+  #
+  # * artefact: artefact user is loaning
+  # * loan_start: date of loan start
+  # * loan_end: date of loan end
+  #
   def loan!(artefact, loan_start, loan_end)
     unless artefacts.include?(artefact) or artefact.is_on_loan?
       loans.create!({ :artefact_id => artefact.id, :loan_start => loan_start, :loan_end => loan_end })
@@ -103,25 +131,41 @@ class User < ActiveRecord::Base
 
   
   private
-    # password
+    
+    ##
+    # Encrypts and sets password
+    #
     def encrypt_password
         self.salt = make_salt if new_record?
         self.encrypted_password = encrypt(password)
     end
 
+    ##
+    # Returns encrypted password
+    #
     def encrypt(string)
         secure_hash("#{salt}--#{string}")
     end
 
+    ##
+    # Return salt for password
+    #
     def make_salt
         secure_hash("#{Time.now.utc}--#{password}")
     end
-
+    
+    ##
+    # Returns secure hash of string
+    #
     def secure_hash(string)
         Digest::SHA2.hexdigest(string)
     end  
     
-    # userid
+    ##
+    # Creates and sets userid
+    # Userid consists of a leading u for 'user', last two digits of current year, first letter of first and second name, and 
+    # number of user to register in the sytem. 
+    #
     def make_userid
       self.userid = 'u' + Time.new.strftime("%y") + firstname[0,1].downcase + lastname[0,1].downcase + User.count.to_s
     end

@@ -1,3 +1,5 @@
+<% user = @artefact.user rescue User.find(@artefact.user_id) %>
+
 <!-- Gmaps -->
 <%= render :partial => "shared/location_item", :object => @artefact %>
 
@@ -14,12 +16,24 @@
 </table>
 
 <span class="bold_action_links">
-	<%= link_to 'Reviews', reviews_artefact_path(@artefact) %> |
-	<%= link_to 'Loan history', loans_artefact_path(@artefact) %>
+	<%= link_to 'Reviews', reviews_artefact_path(@artefact) %>
+	<% if current_user?(user) or current_user.admin? %>
+	| <%= link_to 'Loan history', loans_artefact_path(@artefact) %>
+	<% end %>
 </span>
 
 
-<% user = @artefact.user rescue User.find(@artefact.user_id) %>
+<% if !current_user?(user) or current_user.admin?  %>
+	<h3>New loan</h3>
+	<%= render :partial => "shared/loan", :object => @artefact %>
+	<% if !current_user.admin? %>
+		<div>
+			<%= link_to 'Back', artefacts_path %>
+		</div>
+	<% end %>
+<% end %>
+
+
 <% if current_user?(user) or current_user.admin? %>
 	<h3>Current Loan</h3>
 	<%= render :partial => "shared/currentloan", :object => @artefact %>
@@ -27,11 +41,5 @@
 	<div>
 		<%= link_to 'Edit', edit_artefact_path(@artefact) %> |
 		<%= link_to 'Back', myartefacts_user_path(user) %>
-	</div>
-<% else %>
-	<h3>New loan</h3>
-	<%= render :partial => "shared/loan", :object => @artefact %>
-	<div>
-		<%= link_to 'Back', artefacts_path %>
 	</div>
 <% end %>

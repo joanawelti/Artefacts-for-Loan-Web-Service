@@ -315,6 +315,10 @@ td.artefact, td.location {
 	margin-right:2em;
 }
 
+a.details {
+	font-weight: bold;
+}
+
 /**
 *		Loans
 */

@@ -1,3 +1,12 @@
+# == Comment
+# 
+# Table name: comments
+#
+# Comment records should require:
+# * content       :string
+# * user_id       :integer => user that wrote comment
+# * artefact_id   :integer => artefact for which the comment is for
+#
 class Comment < ActiveRecord::Base
   
   ## attributes

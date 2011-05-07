@@ -1,7 +1,16 @@
-# t.integer :loaner_id
-# t.integer :loaned_id
-# t.date :loan_start
-# t.date :loan_end
+# == Loan
+#
+# Table name: loans
+#
+# Loan records should require:
+# * loan_start  :date
+# * loan_end    :date
+# * artefact_id :integer => artefact being loaned
+# * user_id     :integer => user that loans artefact
+#
+# Optional:
+# * active    :boolean => loans that are not yet returned are active, finished ones are not active anymore 
+#
 
 class Loan < ActiveRecord::Base
         
@@ -20,18 +29,5 @@ class Loan < ActiveRecord::Base
     belongs_to :artefact
         
     default_scope :order => 'loans.created_at DESC'
-    
-    ## hooks
-    after_create :update_artefact
-    before_destroy :reset_artefact
-    
-    private
-      def update_artefact
-        self.artefact.update_attributes(:available => false)
-      end
-      
-      def reset_artefact
-        self.artefact.update_attributes(:available => true)
-      end
     
 end

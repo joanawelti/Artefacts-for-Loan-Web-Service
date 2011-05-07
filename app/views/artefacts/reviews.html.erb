@@ -5,8 +5,10 @@
 <%= render :partial => "artefact_item_short", :object => @artefact %>
 </table>
 
+<% if @artefact.loaner?(current_user) %>
 <h2>Add review</h2>
 <%= render 'shared/comment_form' %>
+<% end %>
 
 <% unless @artefact.comments.empty? %>
 <h2>Reviews</h2>

@@ -1,14 +1,20 @@
-# == Schema Information
-# Schema version: 20110315160545
+# == Artefact
 #
 # Table name: artefacts
 #
-#  id          :integer         not null, primary key
-#  artefactid  :string(255)
-#  name        :string(255)
-#  description :text
-#  created_at  :datetime
-#  updated_at  :datetime
+# User records should require:
+#  * name       :string
+#  * user_id    :integer => association to user
+#
+#
+# Optional:
+# * description     :string
+# * lat/long        :float => default location. Artefacts can have their own location if it is different from the owner's location, but this should seldom be the case. Added because of the project description 
+# * photo. Managed by paperclip plugin. If no picture, default picture is used
+# * visible    :boolean => if set to false, artefact can't be borrowed and doesn't show up for other users. Default is true
+#
+#
+# Belongs to users, can have loaners and comments
 #
 
 class Artefact < ActiveRecord::Base
@@ -16,7 +22,9 @@ class Artefact < ActiveRecord::Base
   ## relationships
   belongs_to :user
   has_many :reverse_loans,  :foreign_key => "artefact_id",
-                            :class_name => "Loan"
+                            :class_name => "Loan",
+                            :dependent => :destroy
+                            
   has_many :loaners, :through => :reverse_loans, :source => :user
   has_many :comments, :dependent => :destroy
   
@@ -58,29 +66,48 @@ class Artefact < ActiveRecord::Base
   ## hooks
   before_create :make_artefactid
   
-  
+  ##
+  # Returns artefacts that contain a string similar to search_string in their name, description or artefactid
+  #
   def self.search(search_string)
     content = "%#{search_string}%"
     Artefact.where(['visible = ? AND (name LIKE ? OR description LIKE ? OR artefactid LIKE ?)', true, content, content, content])
   end
   
+  ##
+  # Returns the current loan or nil, if not loaned at the moment
+  #
   def current_loan
-    current = reverse_loans.where(['active = ?', true])
-    current.first unless current.blank?
+    current = reverse_loans.find_by_active(true) 
+    current unless current.blank?
   end
   
+  ##
+  # Returns true if user has ever been a borrower of artefact
+  #
   def loaner?(user)
     !loaners.find_by_id(user).blank?
   end
   
+  ##
+  # Returns true if the artefact is currently loaned by a user
+  #
   def is_on_loan?
     !current_loan.nil?
   end
   
+  ##
+  # Ends a loan and makes the artefact loanable again
+  #
   def unloan!
     reverse_loans.find_by_active(true).update_attributes({ :loan_end => Date.current, :active => false  })
   end
   
+  ##
+  # Returns the current location of the artefact
+  # If the artefact is on loan, this is the loaner's location, else the owner's or if available, 
+  # the artefact's own location
+  #
   def get_current_location
     if is_on_loan?
       # get loaners location
@@ -99,7 +126,9 @@ class Artefact < ActiveRecord::Base
   
   private
   
-    # artefactid
+    ##
+    # Creats and sets artefactid
+    #
     def make_artefactid
       self.artefactid = 'a' + Time.new.strftime("%y") + name[0,2].downcase + Artefact.count.to_s
     end

@@ -9,7 +9,7 @@
 			</td>
 			<td>
 				<% user = comment.user rescue User.find(comment.user_id) %>
-				<% if current_user?(user) %>
+				<% if current_user?(user) or current_user.admin? %>
 					<span class="action_links">
 						<%= link_to 'Edit comment', edit_comment_path(comment) %>
 						<%= link_to 'Delete comment', comment,  :method => :delete,

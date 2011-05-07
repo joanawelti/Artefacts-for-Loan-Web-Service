@@ -1,8 +1,8 @@
 class LoansController < ApplicationController
 
   before_filter :authenticate
-  before_filter :authorized_user, :only => :destroy  
-  before_filter :authenticate_admin, :only => [:index, :reorder]
+  before_filter :authorized_user, :only => :finish  
+  before_filter :authenticate_admin, :only => [:index, :reorder, :destroy]
   
   def index
     @title = "Active Loans"
@@ -26,15 +26,24 @@ class LoansController < ApplicationController
   end
 
   def destroy
-    loan = Loan.find(params[:id])
-    @artefact = Artefact.find(loan.artefact_id)
+    @loan = Loan.find(params[:id])
+    @artefact = Artefact.find(@loan.artefact_id)
     @artefact.unloan!
-    if !loan.user.loaned?(@artefact)
+    @loan.destroy      
+    flash[:success] = "Loan deleted successfully"
+    redirect_back_or loans_path
+  end
+  
+  def finish
+    @loan = Loan.find(params[:id])
+    @artefact = Artefact.find(@loan.artefact_id)
+    @artefact.unloan!
+    if !@loan.user.loaned?(@artefact)
       flash[:success] = "Loan successfully ended"
     else 
       flash[:error] = "There was an error with your request. Please try again later."
     end
-    redirect_to root_path
+    redirect_to @artefact
   end
   
   def reorder
@@ -46,9 +55,7 @@ class LoansController < ApplicationController
       end
     else
       if @order.to_i == 2
-        puts "ASC"
         @loans = Loan.find_all_by_active(true).sort!{|a,b| a.created_at <=> b.created_at}.paginate(:page => params[:page])
-        puts @loans.first.id
       else
         @loans = Loan.find_all_by_active(true).paginate(:page => params[:page])
       end

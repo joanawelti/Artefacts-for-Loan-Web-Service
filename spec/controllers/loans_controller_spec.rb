@@ -71,7 +71,63 @@ describe LoansController do
     
   end
 
-  describe "DELETE 'destroy'" do
+  describe "DELETE 'destory'" do
+    
+    context "for an unauthorized users" do
+      before(:each) do
+        test_log_in(@user)
+        @user.loan!(@artefact, @loan_start, @loan_end)
+        @loan = @user.loans.find_by_artefact_id(@artefact)
+      end
+    
+      it "should not be possible to delete loan" do
+        delete :destroy, :id => @loan
+        response.should redirect_to(root_path)
+      end
+      
+    end
+    
+    context "for the owner of the loaned artefact" do
+      before(:each) do
+        @loan = Factory(:loan, :user => @user, :artefact => @artefact)
+        test_log_in(@owner)
+      end
+      
+      it "should not be possible to delete loan" do
+        delete :destroy, :id => @loan
+        response.should redirect_to(root_path)
+      end
+    end
+
+    context "for admins" do
+      
+      before(:each) do
+        @loan = Factory(:loan, :user => @user, :artefact => @artefact)
+        @admin = Factory(:user, :email => Factory.next(:email), :administrator => true)
+        test_log_in(@admin)
+      end
+
+      it "should unloan the artefact" do
+         delete :destroy, :id => @loan
+         @user.loaned?(@artefact).should be_false
+      end
+      
+      it "should destroy the loan" do
+         lambda do
+           delete :destroy, :id => @loan
+         end.should change(Loan, :count).by(-1)
+      end
+      
+      it "should have a flash message" do
+         delete :destroy, :id => @loan
+        flash[:success].should =~ /Loan deleted successfully/i
+      end
+      
+    end
+  end
+
+
+  describe "POST 'finish'" do
 
     
     describe "for an unauthorized users" do
@@ -82,7 +138,7 @@ describe LoansController do
       end
     
       it "should not be possible for the loaner to end the loan" do
-        delete :destroy, :id => @loan
+        post :finish, :id => @loan
         response.should redirect_to(root_path)
       end
       
@@ -95,12 +151,12 @@ describe LoansController do
       end
 
       it "should unloan the artefact" do
-        delete :destroy, :id => @loan
+         post :finish, :id => @loan
         @user.loaned?(@artefact).should be_false
       end
       
       it "should have a flash message" do
-        delete :destroy, :id => @loan
+         post :finish, :id => @loan
         flash[:success].should =~ /Loan successfully ended/i
       end
       
@@ -192,6 +248,6 @@ describe LoansController do
     
     end
    
-   end
+  end
   
 end

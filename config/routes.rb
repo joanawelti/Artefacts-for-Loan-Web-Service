@@ -18,6 +18,13 @@ ArtefactsService::Application.routes.draw do
   
   resources :sessions, :only => [:new, :create, :destroy]
   resources :loans, :only => [:create, :destroy, :index]
+  resources :loans do
+    member do
+      post :finish
+    end
+  end
+      
+  
   resources :comments, :except => [:index, :new]
   resources :forgotten_passwords, :only => [:new, :create]
   

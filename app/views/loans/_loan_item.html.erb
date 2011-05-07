@@ -4,7 +4,14 @@
 			<h3><%= loan_item.artefact.artefactid %></h3>
 		</td>
 		<td>
-			<span class="action_links"><%= link_to "show", artefact_path(loan_item.artefact) %></span>
+			<% if current_user.admin? %>
+				<%= link_to "delete", loan_item, :method => :delete,
+                                     			:confirm => "You sure?",
+                                     			:title => loan_item.artefact.name %>
+			<% end %>
+			<span class="action_links">
+				<%= link_to "Details", artefact_path(loan_item.artefact), :class => "details" %>
+			</span>
 		</td>
 	</tr>
 	<%= render :partial => "artefacts/artefact_item_short", :object => loan_item.artefact %>
@@ -15,7 +22,9 @@
 		<td>
 			<span class="loan_info">From: <%= loan_item.loan_start.strftime("%a, %d %b %Y") %></span> 
 			<span class="loan_info">To: <%= loan_item.loan_end.strftime("%a, %d %b %Y") %></span>
-			<span class="action_links"><%= link_to "Borrower: #{loan_item.user.userid}", loan_item.user %></span>
+			<% if current_user.admin? %>	
+				<span class="action_links"><%= link_to "Borrower: #{loan_item.user.userid}", loan_item.user %></span>
+			<% end %>
 		</td>
 	</tr>
 </table>

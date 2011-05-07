@@ -14,8 +14,8 @@
 				To: <%= loan.loan_end.strftime("%a, %d %b %Y") %>
 			</td>
 			<td>
-				<%= form_for @artefact.reverse_loans.find_by_artefact_id(@artefact),
-					           :html => { :method => :delete } do |f| %>
+				<%= form_for :loan, loan,  
+					           :url => finish_loan_path(loan) do |f| %>
 										<div class="actions"><%= f.submit "End loan" %></div>
 				<% end %>
 			</td>

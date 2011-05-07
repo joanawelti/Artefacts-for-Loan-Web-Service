@@ -27,21 +27,34 @@ describe CommentsController do
       before(:each) do
         test_log_in(@user)
       end
-
-        it "should create a comment" do
-          lambda do
+        
+        context "user who hasn't loaned the artefact" do
+          it "should redirect to the home page" do
             post :create, :comment => @attr
-          end.should change(Comment, :count).by(1)
+            response.should redirect_to(root_path)
+          end
         end
 
-        it "should redirect to the artefact's page" do
-          post :create, :comment => @attr
-          response.should redirect_to(reviews_artefact_path(@artefact))
-        end
+        context "user who has loaned the artefact" do
+          before(:each) do
+            @loan = Factory(:loan, :artefact => @artefact, :user => @user)
+          end
+          
+          it "should create a comment" do
+            lambda do
+              post :create, :comment => @attr
+            end.should change(Comment, :count).by(1)
+          end
 
-        it "should have a flash message" do
-          post :create, :comment => @attr
-          flash[:success].should =~ /created/i
+          it "should redirect to the artefact's page" do
+            post :create, :comment => @attr
+            response.should redirect_to(reviews_artefact_path(@artefact))
+          end
+
+          it "should have a flash message" do
+            post :create, :comment => @attr
+            flash[:success].should =~ /created/i
+          end
         end
     end
   end

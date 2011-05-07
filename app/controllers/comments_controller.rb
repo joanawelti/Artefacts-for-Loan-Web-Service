@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_filter :authenticate
-  
+  before_filter :authorized_loaner, :only => [:create]
   before_filter :authorized_user, :only => [:destroy, :edit]
 
   def create
@@ -8,9 +8,6 @@ class CommentsController < ApplicationController
       if @comment.save
         flash[:success] = "Comment was created"
         redirect_to reviews_artefact_path(@comment.artefact)
-      elsif !params[:comment][:artefact_id].blank?
-        @title = "New comment"
-        render reviews_artefact_path(Artefact.find(params[:comment][:artefact_id]))  
       else
         render root_page
       end
@@ -42,6 +39,11 @@ class CommentsController < ApplicationController
   end
   
   private
+  
+    def authorized_loaner
+      @artefact = Artefact.find_by_id(params[:comment][:artefact_id])
+      redirect_to root_path unless !@artefact.nil? and @artefact.loaner?(current_user)
+    end
     
     def authorized_user
       @comment = Comment.find(params[:id])
